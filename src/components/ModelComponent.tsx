@@ -12,20 +12,17 @@ const ModelComponent: React.FC<ModelComponentProps> = ({ title, children, onClos
 
   const handleClickOutside = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      onClose();
+        onClose();
     }
-  };
+};
 
-  const handleClose = () => {
-    onClose();
-  };
+useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+}, [onClose]);
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50">
@@ -33,7 +30,7 @@ const ModelComponent: React.FC<ModelComponentProps> = ({ title, children, onClos
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button
-            onClick={handleClose}
+            onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
             <IoClose size={24} />

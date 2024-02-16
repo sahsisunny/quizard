@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import QuestionSelectors from "./QuestionSelectors";
 import QuestionTitle from "./QuestionTitle";
@@ -13,7 +13,7 @@ function QuestionSection() {
       />
 
       <QuestionSelectors />
-      <TextEditor placeholder="Enter your question here" />
+      <TextEditor />
     </div>
   );
 }

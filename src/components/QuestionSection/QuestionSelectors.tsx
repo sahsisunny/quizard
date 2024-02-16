@@ -49,17 +49,13 @@ function QuestionSelectors() {
       </div>
 
       {showModal && (
-        <ModelComponent
-          title="Question Settings"
-          children={
-            <div className="flex flex-wrap justify-around items-center gap-2">
-              <Selector options={questionPoints} name="Points" />
-              <Selector options={questionTime} name="Time" />
-              <Selector options={questionDifficulty} name="Difficulty" />
-            </div>
-          }
-          onClose={onClickClose}
-        />
+        <ModelComponent title="Question Settings" onClose={onClickClose}>
+          <div className="flex flex-wrap justify-around items-center gap-2">
+            <Selector options={questionPoints} name="Points" />
+            <Selector options={questionTime} name="Time" />
+            <Selector options={questionDifficulty} name="Difficulty" />
+          </div>
+        </ModelComponent>
       )}
     </div>
   );
