@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import React, { useState } from 'react';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 interface SelectorProps {
   options: { [key: string]: string };
   name: string;
+  width?: string;
 }
 
-function Selector({ options, name }: SelectorProps) {
+function Selector({ options, name, width }: SelectorProps) {
   const [selected, setSelected] = useState(false);
   const [selectedOption, setSelectedOption] = useState(name||"Select");
 
@@ -22,7 +23,8 @@ function Selector({ options, name }: SelectorProps) {
   };
 
   return (
-    <div className="w-40" onClick={handleSelect}>
+    <div className="relative" style={{ width: width }}
+    onClick={handleSelect}>
       <div>
         <button
           type="button"

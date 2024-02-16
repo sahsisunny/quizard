@@ -1,6 +1,7 @@
 
-import React from "react";
-import { FaLightbulb } from "react-icons/fa";
+import React from 'react';
+import { FaLightbulb } from 'react-icons/fa';
+
 interface QuestionTitleProps {
   title: string;
   onClickTitle: () => void;

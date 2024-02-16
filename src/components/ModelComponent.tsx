@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import { IoClose } from "react-icons/io5";
+import React, { useEffect, useRef } from 'react';
+import { IoClose } from 'react-icons/io5';
 
 interface ModelComponentProps {
   title: string;

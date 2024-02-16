@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { IoImage } from "react-icons/io5";
+import React, { useState } from 'react';
+import { IoImage } from 'react-icons/io5';
 
 const TextEditor: React.FC = () => {
   const [text, setText] = useState(""); // State to hold the text

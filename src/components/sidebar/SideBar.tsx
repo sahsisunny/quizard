@@ -1,7 +1,8 @@
-import React from "react";
-import QuestionAddBox from "./QuestionAddBox";
-import QuestionBox from "./QuestionBox";
-import SidebarButtons from "./SidebarButtons";
+import React from 'react';
+
+import QuestionAddBox from './QuestionAddBox';
+import QuestionBox from './QuestionBox';
+import SidebarButtons from './SidebarButtons';
 
 function SideBar() {
   return (

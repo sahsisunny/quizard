@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import Selector from "./Selector";
-import ModelComponent from "@/components/ModelComponent";
-import { IoMdSettings } from "react-icons/io";
+import React, { useState } from 'react';
+import { IoMdSettings } from 'react-icons/io';
+
+import ModelComponent from '@/components/ModelComponent';
+
+import Selector from './Selector';
 
 function QuestionSelectors() {
   const [showModal, setShowModal] = useState(false);
