@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { IoIosAdd } from 'react-icons/io';
 
-import ModelComponent from '@/components/ModelComponent';
+import Modal from '@/components/Modal';
 
 import TextEditor from '../TextEditor';
 import AddExplanation from './AddExplanation';
@@ -13,7 +13,7 @@ import QuestionSettings from './QuestionSettings';
 import QuizSettings from './QuizSettings';
 
 function QuestionSection() {
-  const [showModel, setShowModel] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("Untitled quiz");
   const [errorMessages, setErrorMessages] = useState("This field is required");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -45,7 +45,7 @@ function QuestionSection() {
     <div className="w-full min-h-[90vh]">
       <QuizSettings
         title={title}
-        onClickTitle={() => setShowModel(true)}
+        onClickTitle={() => setShowModal(true)}
         addExplanationHandler={(e) => showExplanationHandler(e as any)}
       />
 
@@ -58,19 +58,19 @@ function QuestionSection() {
           deleteExplanation={() => setShowExplanation(false)}
         />
       )}
-      {showModel && (
-        <ModelComponent
+      {showModal && (
+        <Modal
           title="Edit Quiz Cover"
           subtitle="Review your quiz before publishing"
-          onClose={() => setShowModel(false)}
+          onClose={() => setShowModal(false)}
         >
           <QuestionSettingModal
             title={title}
             inputOnChange={inputOnChangeHandler}
             error={errorMessages}
-            saveOnClick={() => setShowModel(false)}
+            saveOnClick={() => setShowModal(false)}
           />
-        </ModelComponent>
+        </Modal>
       )}
     </div>
   );

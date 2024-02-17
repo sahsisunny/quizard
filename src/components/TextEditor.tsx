@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { IoImage } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
+
+import ImageUploadModal from './ImageUploadModal';
 
 interface TextEditorProps {
   editorStyles?: string;
@@ -18,6 +21,8 @@ const TextEditor = ({
   isDeleteButton,
   deleteButtonHandler,
 }: TextEditorProps) => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div
       className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
@@ -30,7 +35,7 @@ const TextEditor = ({
           <i>I</i>
         </button>
         <button className="p-2 underline">U</button>
-        <button className="p-2">
+        <button className="p-2" onClick={() => setShowModal(true)}>
           <IoImage />
         </button>
         {isDeleteButton && (
@@ -57,6 +62,7 @@ const TextEditor = ({
         className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
         placeholder={placeholder}
       />
+      {showModal && <ImageUploadModal onClose={() => setShowModal(false)} />}
     </div>
   );
 };

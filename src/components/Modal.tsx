@@ -2,14 +2,14 @@ import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
 
-interface ModelComponentProps {
+interface ModalProps {
   title: string;
   subtitle: string;
   children: React.ReactNode;
   onClose: () => void;
 }
 
-const ModelComponent: React.FC<ModelComponentProps> = ({
+const Modal: React.FC<ModalProps> = ({
   title,
   subtitle,
   children,
@@ -32,7 +32,7 @@ const ModelComponent: React.FC<ModelComponentProps> = ({
   }, [onClose]);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-40">
+    <div className="text-black fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-40">
       <div
         ref={modalRef}
         className="bg-white rounded-lg p-4 md:w-[50%] w-[90%]"
@@ -64,4 +64,4 @@ const ModelComponent: React.FC<ModelComponentProps> = ({
   );
 };
 
-export default ModelComponent;
+export default Modal;

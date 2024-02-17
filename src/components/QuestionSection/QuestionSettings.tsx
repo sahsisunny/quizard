@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
 
-import ModelComponent from '@/components/ModelComponent';
+import Modal from '@/components/Modal';
 import { questionDifficulty, questionPoints, questionTime, questionType } from '@/data/selectors';
 
 import Selector from '../Selector';
@@ -35,7 +35,7 @@ function QuestionSettings() {
       </div>
 
       {showModal && (
-        <ModelComponent
+        <Modal
           title="Question Settings"
           subtitle="Select the question settings"
           onClose={onClickClose}
@@ -45,7 +45,7 @@ function QuestionSettings() {
             <Selector options={questionTime} name="Time" />
             <Selector options={questionDifficulty} name="Difficulty" />
           </div>
-        </ModelComponent>
+        </Modal>
       )}
     </div>
   );
