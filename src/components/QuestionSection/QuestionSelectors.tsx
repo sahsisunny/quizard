@@ -3,28 +3,12 @@ import React, { useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
 
 import ModelComponent from '@/components/ModelComponent';
+import { questionDifficulty, questionPoints, questionTime, questionType } from '@/data/selectors';
 
-import Selector from './Selector';
+import Selector from '../Selector';
 
 function QuestionSelectors() {
   const [showModal, setShowModal] = useState(false);
-  const questionType = {
-    "Single Choice": "single",
-    "Multiple Choice": "multi",
-  };
-  const questionPoints = {
-    "1 Points": "1",
-    "2 Points": "2",
-    "4 Points": "4",
-    "5 Points": "5",
-  };
-  const questionTime = {
-    "15 Second": "15",
-    "30 Second": "30",
-    "45 Second": "45",
-    "60 Second": "60",
-  };
-  const questionDifficulty = { Easy: "Easy", Medium: "Medium", Hard: "Hard" };
 
   const onClickClose = () => {
     setShowModal(false);
@@ -51,7 +35,11 @@ function QuestionSelectors() {
       </div>
 
       {showModal && (
-        <ModelComponent title="Question Settings" onClose={onClickClose}>
+        <ModelComponent
+          title="Question Settings"
+          subtitle="Select the question settings"
+          onClose={onClickClose}
+        >
           <div className="flex flex-wrap justify-around items-center gap-2">
             <Selector options={questionPoints} name="Points" />
             <Selector options={questionTime} name="Time" />

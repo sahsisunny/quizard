@@ -1,28 +1,30 @@
-import React, { useState } from "react";
-import { IoImage } from "react-icons/io5";
+import { IoImage } from 'react-icons/io5';
+import { MdDelete } from 'react-icons/md';
 
 interface TextEditorProps {
-  width?: string;
-  height?: string;
-  backgroundColor?: string;
-  textAreaBackgroundColor?: string;
+  editorStyles?: string;
+  toolbarStyles?: string;
   placeholder?: string;
   type?: "SINGLE" | "MULTIPLE";
+  deleteButtonHandler?: () => void;
+  isDeleteButton?: boolean;
 }
 
 const TextEditor = ({
-  width = "w-full",
-  backgroundColor = "bg-white",
-  textAreaBackgroundColor = "bg-white",
+  editorStyles,
+  toolbarStyles,
   placeholder = "Type your question here",
   type,
-  height,
+  isDeleteButton,
+  deleteButtonHandler,
 }: TextEditorProps) => {
+  console.log("toolbarStyles:", toolbarStyles); // Log editorStyles prop
+
   return (
     <div
-      className={`flex flex-col gap-2 p-2 rounded text-white ${height} ${width} ${backgroundColor}`}
+      className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
     >
-      <div className="flex items-center relative">
+      <div className="flex flex-wrap items-center relative">
         <button className="p-2">
           <strong>B</strong>
         </button>
@@ -31,14 +33,13 @@ const TextEditor = ({
         </button>
         <button className="p-2 underline">U</button>
         <button className="p-2">
-          x<sup>2</sup>
-        </button>
-        <button className="p-2">
-          x<sub>2</sub>
-        </button>
-        <button className="p-2">
           <IoImage />
         </button>
+        {isDeleteButton && (
+          <button className="p-2" onClick={deleteButtonHandler}>
+            <MdDelete />
+          </button>
+        )}
         {type === "SINGLE" ? (
           <input
             type="radio"
@@ -53,7 +54,7 @@ const TextEditor = ({
       </div>
 
       <textarea
-        className={`rounded w-full p-2 ${textAreaBackgroundColor} border-none focus:outline-none`}
+        className={`rounded min-w-2  p-2  ${editorStyles}  border-none focus:outline-none`}
         placeholder={placeholder}
       />
     </div>
