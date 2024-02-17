@@ -5,7 +5,7 @@ import { IoMdSettings } from 'react-icons/io';
 import Modal from '@/components/Modal';
 import { questionDifficulty, questionPoints, questionTime, questionType } from '@/data/selectors';
 
-import Selector from '../Selector';
+import Selector from './Selector';
 
 function QuestionSettings() {
   const [showModal, setShowModal] = useState(false);

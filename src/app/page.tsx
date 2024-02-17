@@ -1,6 +1,6 @@
 "use client";
-import QuestionSection from '@/components/questionSection/QuestionSection';
-import SideBar from '@/components/sidebar/SideBar';
+import QuestionSection from '@/components/QuestionSection';
+import SideBar from '@/components/SideBar';
 import TopBarComponent from '@/components/TopBar';
 
 export default function Home() {

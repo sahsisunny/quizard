@@ -1,13 +1,9 @@
-"use client";
-import Image from 'next/image';
 import { useState } from 'react';
-import { IoIosAdd } from 'react-icons/io';
 
 import Modal from '@/components/Modal';
 
-import TextEditor from '../TextEditor';
 import AddExplanation from './AddExplanation';
-import CreateQuestionArea from './CreateQuestionArea';
+import CreateQuestion from './CreateQuestion';
 import QuestionSettingModal from './QuestionSettingModal';
 import QuestionSettings from './QuestionSettings';
 import QuizSettings from './QuizSettings';
@@ -50,7 +46,7 @@ function QuestionSection() {
       />
 
       <QuestionSettings />
-      {showCreateQuestion && <CreateQuestionArea />}
+      {showCreateQuestion && <CreateQuestion />}
       {showExplanation && (
         <AddExplanation
           backToQuestion={showCreateQuestionHandler}

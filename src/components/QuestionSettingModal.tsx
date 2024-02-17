@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CiImageOn } from 'react-icons/ci';
 
 import { gradeLevel, language, questionSubject, visibility } from '@/data/selectors';
 
-import Selector from '../Selector';
+import Selector from './Selector';
 
 interface QuestionSettingModalProps {
   title: string;

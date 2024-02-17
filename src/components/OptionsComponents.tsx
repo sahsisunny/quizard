@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { IoIosAdd } from 'react-icons/io';
 
-import TextEditor from '../TextEditor';
+import TextEditor from './TextEditor';
 
-function Options() {
+function OptionsComponents() {
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
 
   const handleAddEditor = () => {
@@ -64,4 +64,4 @@ function Options() {
   );
 }
 
-export default Options;
+export default OptionsComponents;
