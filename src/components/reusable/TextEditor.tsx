@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IoImage } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
 
-import ImageUploadModal from './ImageUploadModal';
+import ImageUploadModal from '../modals/ImageUploadModal';
 
 interface TextEditorProps {
   editorStyles?: string;
@@ -11,6 +11,7 @@ interface TextEditorProps {
   type?: "SINGLE" | "MULTIPLE";
   deleteButtonHandler?: () => void;
   isDeleteButton?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const TextEditor = ({
@@ -20,6 +21,7 @@ const TextEditor = ({
   type,
   isDeleteButton,
   deleteButtonHandler,
+  onChange,
 }: TextEditorProps) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -61,6 +63,7 @@ const TextEditor = ({
       <textarea
         className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
         placeholder={placeholder}
+        onChange={onChange}
       />
       {showModal && <ImageUploadModal onClose={() => setShowModal(false)} />}
     </div>

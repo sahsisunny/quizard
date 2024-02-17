@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { FcAddImage } from 'react-icons/fc';
 
+import Modal from '../reusable/Modal';
 import ImageCropModal from './ImageCropModal';
-import Modal from './Modal';
 
 interface ImageUploadModalProps {
   onClose: () => void;

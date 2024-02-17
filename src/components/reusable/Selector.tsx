@@ -68,18 +68,19 @@ function Selector({ options, name, width }: SelectorProps) {
             : "hidden"
         }
       >
-        {Object.keys(options).map((option, index) => (
-          <div className="py-1" role="none" key={index}>
-            <button
-              className="w-fit text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              role="menuitem"
-              id={`menu-item-${index}`}
-              onClick={() => handleOption(option)}
-            >
-              {option}
-            </button>
-          </div>
-        ))}
+        {!!options &&
+          Object.keys(options).map((option, index) => (
+            <div className="py-1" role="none" key={index}>
+              <button
+                className="w-fit text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+                id={`menu-item-${index}`}
+                onClick={() => handleOption(option)}
+              >
+                {option}
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );

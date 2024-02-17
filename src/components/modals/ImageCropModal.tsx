@@ -6,7 +6,7 @@ import { IoMdSave } from 'react-icons/io';
 import { MdDone } from 'react-icons/md';
 import ReactCrop, { centerCrop, Crop, makeAspectCrop, PixelCrop } from 'react-image-crop';
 
-import Modal from './Modal';
+import Modal from '../reusable/Modal';
 
 interface ImageCropModalProps {
   imgSrc: string;

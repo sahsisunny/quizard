@@ -1,10 +1,14 @@
 import { useState } from 'react';
 
-import Modal from '@/components/Modal';
+import Modal from '@/components/reusable/Modal';
+import {
+    gradeLevel, language, questionDifficulty, questionPoints, questionSubject, questionTime,
+    questionType, visibility
+} from '@/data/selectors';
 
 import AddExplanation from './AddExplanation';
 import CreateQuestion from './CreateQuestion';
-import QuestionSettingModal from './QuestionSettingModal';
+import QuizSettingModal from './modals/QuizSettingModal';
 import QuestionSettings from './QuestionSettings';
 import QuizSettings from './QuizSettings';
 
@@ -45,7 +49,12 @@ function QuestionSection() {
         addExplanationHandler={(e) => showExplanationHandler(e as any)}
       />
 
-      <QuestionSettings />
+      <QuestionSettings
+        questionDifficulty={questionDifficulty}
+        questionPoints={questionPoints}
+        questionTime={questionTime}
+        questionType={questionType}
+      />
       {showCreateQuestion && <CreateQuestion />}
       {showExplanation && (
         <AddExplanation
@@ -60,11 +69,15 @@ function QuestionSection() {
           subtitle="Review your quiz before publishing"
           onClose={() => setShowModal(false)}
         >
-          <QuestionSettingModal
+          <QuizSettingModal
             title={title}
             inputOnChange={inputOnChangeHandler}
             error={errorMessages}
             saveOnClick={() => setShowModal(false)}
+            questionSubject={questionSubject}
+            gradeLevel={gradeLevel}
+            language={language}
+            visibility={visibility}
           />
         </Modal>
       )}

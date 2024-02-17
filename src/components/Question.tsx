@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import TextEditor from '@/components/TextEditor';
+import TextEditor from '@/components/reusable/TextEditor';
 
 interface QuestionProps {
   image?: string;

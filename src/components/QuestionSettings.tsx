@@ -2,12 +2,23 @@
 import React, { useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
 
-import Modal from '@/components/Modal';
-import { questionDifficulty, questionPoints, questionTime, questionType } from '@/data/selectors';
+import Modal from '@/components/reusable/Modal';
 
-import Selector from './Selector';
+import Selector from './reusable/Selector';
 
-function QuestionSettings() {
+interface QuestionSettingsProps {
+  questionDifficulty: { [key: string]: string };
+  questionPoints: { [key: string]: string };
+  questionTime: { [key: string]: string };
+  questionType: { [key: string]: string };
+}
+
+function QuestionSettings({
+  questionDifficulty,
+  questionPoints,
+  questionTime,
+  questionType,
+}: QuestionSettingsProps) {
   const [showModal, setShowModal] = useState(false);
 
   const onClickClose = () => {

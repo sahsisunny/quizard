@@ -1,23 +1,29 @@
 import React from 'react';
 import { CiImageOn } from 'react-icons/ci';
 
-import { gradeLevel, language, questionSubject, visibility } from '@/data/selectors';
+import Selector from '../reusable/Selector';
 
-import Selector from './Selector';
-
-interface QuestionSettingModalProps {
+interface QuizSettingModalProps {
   title: string;
   inputOnChange: (e: any) => void;
   saveOnClick: () => void;
   error: string;
+  questionSubject: { [key: string]: string };
+  gradeLevel: { [key: string]: string };
+  language: { [key: string]: string };
+  visibility: { [key: string]: string };
 }
 
-function QuestionSettingModal({
+function QuizSettingModal({
   title,
   inputOnChange,
   saveOnClick,
   error,
-}: QuestionSettingModalProps) {
+  questionSubject,
+  gradeLevel,
+  language,
+  visibility,
+}: QuizSettingModalProps) {
   const handleSelectAll = (e: any) => {
     e.target.select();
   };
@@ -58,4 +64,4 @@ function QuestionSettingModal({
   );
 }
 
-export default QuestionSettingModal;
+export default QuizSettingModal;

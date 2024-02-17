@@ -4,7 +4,7 @@ import { CiImageOn } from 'react-icons/ci';
 import { FaArrowLeft } from 'react-icons/fa';
 import { IoMdSave } from 'react-icons/io';
 
-import TextEditor from './TextEditor';
+import TextEditor from './reusable/TextEditor';
 
 interface AddExplanationProps {
   backToQuestion: () => void;
