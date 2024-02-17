@@ -5,7 +5,7 @@ import TopBarComponent from '@/components/TopBar';
 
 export default function Home() {
   return (
-    <main className="max-h-screen">
+    <main className="min-h-[100vh]">
       <TopBarComponent />
       <div className="h-full flex xl:flex-row flex-col-reverse">
         <SideBar />

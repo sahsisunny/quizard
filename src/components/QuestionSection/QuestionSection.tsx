@@ -15,6 +15,7 @@ import QuizSettings from './QuizSettings';
 function QuestionSection() {
   const [showModel, setShowModel] = useState(false);
   const [title, setTitle] = useState("Untitled quiz");
+  const [errorMessages, setErrorMessages] = useState("This field is required");
   const [showExplanation, setShowExplanation] = useState(false);
   const [showCreateQuestion, setShowCreateQuestion] = useState(true);
 
@@ -29,8 +30,19 @@ function QuestionSection() {
     setShowExplanation(false);
   };
 
+  const inputOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length < 5) {
+      setErrorMessages("Title must be more than 5 characters");
+    } else {
+      setErrorMessages("");
+    }
+    setTitle(value);
+    console.log(value);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full min-h-[90vh]">
       <QuizSettings
         title={title}
         onClickTitle={() => setShowModel(true)}
@@ -54,7 +66,8 @@ function QuestionSection() {
         >
           <QuestionSettingModal
             title={title}
-            inputOnChange={(e) => setTitle(e.target.value)}
+            inputOnChange={inputOnChangeHandler}
+            error={errorMessages}
             saveOnClick={() => setShowModel(false)}
           />
         </ModelComponent>

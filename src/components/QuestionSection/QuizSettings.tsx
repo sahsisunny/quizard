@@ -17,19 +17,19 @@ function QuestionSettings({
     console.log(e.target.value);
   };
   return (
-    <div className="flex flex-row justify-between items-center p-2 h-14">
+    <div className="flex flex-row justify-between items-center p-2 h-[8vh]">
       <button
-        className="max-w-96 h-10 border-none outline-none rounded-md p-2  text-lg font-semibold flex items-center gap-2"
+        className="max-w-96 h-8 border-none outline-none rounded p-2  text-lg font-semibold flex items-center gap-2"
         onClick={onClickTitle}
       >
         {title}
         <IoMdSettings />
       </button>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 rounded">
         <input
           type="text"
           placeholder="Add Tag"
-          className="w-20 p-2 text-sm border-2 rounded-md"
+          className="w-20 p-2 text-sm border-2 "
           onChange={inputOnChangeHandler}
         />
         <button

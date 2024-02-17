@@ -18,8 +18,8 @@ function AddExplanation({
   deleteExplanation,
 }: AddExplanationProps) {
   return (
-    <div className="p-2">
-      <div className="flex flex-col gap-4 p-2 rounded bg-gray-900 text-white">
+    <div className="p-2 min-h-[74vh]">
+      <div className="flex flex-col gap-4 p-2 rounded bg-gray-900 text-white h-full">
         <div className="flex justify-between items-center gap-4">
           <button
             className="flex gap-2 items-center px-2 py-2 border rounded bg-gray-600 border-none hover:bg-gray-700"

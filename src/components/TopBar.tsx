@@ -4,7 +4,7 @@ import { MdPublish } from 'react-icons/md';
 
 function TopBarComponent() {
   return (
-    <div className="flex flex-row justify-between items-center p-2 border-b border-black h-14 sticky top-0 bg-white">
+    <div className="flex flex-row justify-between items-center p-2 border-b border-black h-[10vh] sticky top-0 bg-white z-40">
       <div className="flex flex-row items-center gap-2">
         <button className="flex flex-row items-center gap-2 py-2 px-3 bg-gray-200 rounded hover:shadow-md">
           <IoIosArrowBack className="sm:text-2xl text-md" />
