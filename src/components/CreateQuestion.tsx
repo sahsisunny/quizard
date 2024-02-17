@@ -17,7 +17,10 @@ function CreateQuestion({ image }: CreateQuestionProps) {
 
   const handleAddEditor = () => {
     if (editors.length < 5) {
-      setEditors((prevEditors) => [...prevEditors, { id: Date.now() }]);
+      setEditors((prevEditors) => [
+        ...prevEditors,
+        { id: Date.now(), isAutoFocus: true },
+      ]);
     }
   };
 
@@ -37,12 +40,43 @@ function CreateQuestion({ image }: CreateQuestionProps) {
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  // on option change
   const onOptionChange = (option: string, index: number) => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].options[index] = option;
     setQuizData({ ...quizData, questions: updatedQuestions });
     console.log({ quizData });
+  };
+
+  const onCheckRadioHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    if (e.target.checked) {
+      const optionValue = activeQuestionData.options[index];
+      const updatedQuestions = [...quizData.questions];
+      updatedQuestions[activeQuestion].answer = [];
+      console.log({ optionValue });
+      updatedQuestions[activeQuestion].answer = [optionValue];
+      setQuizData({ ...quizData, questions: updatedQuestions });
+    }
+  };
+
+  const onCheckCheckboxHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const optionValue = activeQuestionData.options[index];
+    if (e.target.checked) {
+      const updatedQuestions = [...quizData.questions];
+      updatedQuestions[activeQuestion].answer.push(optionValue);
+      setQuizData({ ...quizData, questions: updatedQuestions });
+    } else {
+      const updatedQuestions = [...quizData.questions];
+      updatedQuestions[activeQuestion].answer = updatedQuestions[
+        activeQuestion
+      ].answer.filter((answer) => answer !== optionValue);
+      setQuizData({ ...quizData, questions: updatedQuestions });
+    }
   };
 
   return (
@@ -67,6 +101,7 @@ function CreateQuestion({ image }: CreateQuestionProps) {
               placeholder="Type question here"
               onChange={(e) => onQuestionChange(e.target.value)}
               value={activeQuestionData.question || ""}
+              isAutoFocus={true}
             />
           </div>
         </div>
@@ -102,9 +137,18 @@ function CreateQuestion({ image }: CreateQuestionProps) {
               type={
                 activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
               }
+              onCheckRadio={(e) => onCheckRadioHandler(e, index)}
               placeholder={`Type option ${index + 1} here`}
               onChange={(e) => onOptionChange(e.target.value, index)}
               value={activeQuestionData.options[index] || ""}
+              radioChecked={activeQuestionData.answer.includes(
+                activeQuestionData.options[index],
+              )}
+              checkboxChecked={activeQuestionData.answer.includes(
+                activeQuestionData.options[index],
+              )}
+              onCheckCheckbox={(e) => onCheckCheckboxHandler(e, index)}
+              isDisabled={!activeQuestionData.options[index]}
             />
           ))}
           {editors.length < 5 && (

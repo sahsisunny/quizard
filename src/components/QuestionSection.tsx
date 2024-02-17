@@ -12,6 +12,7 @@ import CreateQuestion from './CreateQuestion';
 import QuizSettingModal from './modals/QuizSettingModal';
 import QuestionSettings from './QuestionSettings';
 import QuizSettings from './QuizSettings';
+import AddQuestionText from './reusable/AddQuestionText';
 
 function QuestionSection() {
   const { quizData, setQuizData } = useQuizData();
@@ -22,9 +23,12 @@ function QuestionSection() {
   const activeQuestionData = quizData.questions[activeQuestion];
 
   const showExplanationHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setShowExplanation(true);
-    setShowCreateQuestion(false);
+    if (activeQuestionData) {
+      setShowExplanation(true);
+      setShowCreateQuestion(false);
+    } else {
+      alert("Please add a question first");
+    }
   };
 
   const showCreateQuestionHandler = () => {
@@ -33,7 +37,6 @@ function QuestionSection() {
   };
 
   const deleteExplanationHandler = () => {
-    // set empty explanation to active question
     setQuizData((prev) => ({
       ...prev,
       questions: prev.questions.map((question, index) =>
@@ -72,6 +75,8 @@ function QuestionSection() {
           deleteExplanation={deleteExplanationHandler}
         />
       )}
+      {!activeQuestionData && <AddQuestionText />}
+
       {showModal && (
         <Modal
           title="Edit Quiz Cover"

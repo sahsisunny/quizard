@@ -13,6 +13,12 @@ interface TextEditorProps {
   isDeleteButton?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string;
+  isAutoFocus?: boolean;
+  checkboxChecked?: boolean;
+  radioChecked?: boolean;
+  onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isDisabled?: boolean;
 }
 
 const TextEditor = ({
@@ -24,6 +30,12 @@ const TextEditor = ({
   deleteButtonHandler,
   onChange,
   value,
+  isAutoFocus,
+  checkboxChecked,
+  radioChecked,
+  onCheckCheckbox,
+  onCheckRadio,
+  isDisabled,
 }: TextEditorProps) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -52,12 +64,18 @@ const TextEditor = ({
             type="radio"
             name="option"
             className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
+            checked={radioChecked}
+            onChange={onCheckRadio}
+            disabled={isDisabled}
           />
         ) : type === "MULTIPLE" ? (
           <input
             type="checkbox"
             name="option"
             className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
+            checked={checkboxChecked}
+            onChange={onCheckCheckbox}
+            disabled={isDisabled}
           />
         ) : null}
       </div>
@@ -67,7 +85,7 @@ const TextEditor = ({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
-        autoFocus
+        autoFocus={isAutoFocus}
       />
       {showModal && <ImageUploadModal onClose={() => setShowModal(false)} />}
     </div>

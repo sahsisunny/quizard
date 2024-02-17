@@ -25,7 +25,7 @@ function AddExplanation({
   const [imgSrc, setImgSrc] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [explanationValue, setExplanationValue] = useState(
-    activeQuestionData.explanation.text || "",
+    activeQuestionData?.explanation.text || "",
   );
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
