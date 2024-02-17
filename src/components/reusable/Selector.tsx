@@ -1,7 +1,7 @@
-"use client";
-
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+
+import { useQuizData } from '@/provider/QuizDataProvider';
 
 interface SelectorProps {
   options: { [key: string]: string };
@@ -10,6 +10,7 @@ interface SelectorProps {
 }
 
 function Selector({ options, name, width }: SelectorProps) {
+  const { quizData, setQuizData } = useQuizData();
   const [selected, setSelected] = useState(false);
   const [selectedOption, setSelectedOption] = useState(name || "Select");
   const selectorRef = useRef<HTMLDivElement>(null);
@@ -18,9 +19,11 @@ function Selector({ options, name, width }: SelectorProps) {
     setSelected(!selected);
   };
 
-  const handleOption = (option: string) => {
-    setSelectedOption(option);
+  const handleOption = (option: { key: string; value: string }) => {
+    setSelectedOption(option.key);
     setSelected(!selected);
+    setQuizData({ ...quizData, [name.toLocaleLowerCase()]: option.value });
+    console.log({ quizData });
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -49,7 +52,7 @@ function Selector({ options, name, width }: SelectorProps) {
       <div>
         <button
           type="button"
-          className="flex justify-between min-w-4 w-full  gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className="flex justify-between min-w-20 w-full  gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           id="menu-button"
         >
           {selectedOption}
@@ -74,8 +77,11 @@ function Selector({ options, name, width }: SelectorProps) {
               <button
                 className="w-fit text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
+                name={name}
                 id={`menu-item-${index}`}
-                onClick={() => handleOption(option)}
+                onClick={() =>
+                  handleOption({ key: option, value: options[option] })
+                }
               >
                 {option}
               </button>

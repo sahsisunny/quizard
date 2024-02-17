@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
 
@@ -28,7 +27,7 @@ function QuestionSettings({
   return (
     <div>
       <div className="flex flex-row justify-between items-center p-2 h-[8vh]">
-        <Selector options={questionType} name="Question Type" />
+        <Selector options={questionType} name="Type" width="w-[100px]" />
         <div className="lg:flex flex-row gap-2 hidden">
           <Selector options={questionPoints} name="Points" />
           <Selector options={questionTime} name="Time" />

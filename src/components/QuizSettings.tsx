@@ -2,6 +2,8 @@ import React from 'react';
 import { FaLightbulb } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 
+import { useQuizData } from '@/provider/QuizDataProvider';
+
 interface QuestionSettingsProps {
   title: string;
   onClickTitle: () => void;
@@ -13,8 +15,13 @@ function QuestionSettings({
   onClickTitle,
   addExplanationHandler,
 }: QuestionSettingsProps) {
+  const { quizData, setQuizData } = useQuizData();
+
   const inputOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    setQuizData((prev) => ({
+      ...prev,
+      title: e.target.value,
+    }));
   };
   return (
     <div className="flex flex-row justify-between items-center p-2 h-[8vh]">

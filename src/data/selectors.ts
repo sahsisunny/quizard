@@ -1,6 +1,6 @@
 export const questionType = {
-  "Single Choice": "SINGLE",
-  "Multiple Choice": "MULTIPLE",
+  Single: "SINGLE",
+  Multiple: "MULTIPLE",
 };
 export const questionPoints = {
   "1 Points": "1",
