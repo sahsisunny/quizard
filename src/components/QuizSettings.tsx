@@ -2,7 +2,7 @@ import React from 'react';
 import { FaLightbulb } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 
-import { useQuizData } from '@/provider/QuizDataProvider';
+import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 interface QuestionSettingsProps {
   title: string;
@@ -15,14 +15,15 @@ function QuestionSettings({
   onClickTitle,
   addExplanationHandler,
 }: QuestionSettingsProps) {
-  const { quizData, setQuizData } = useQuizData();
+  const { setQuizData } = useQuizData();
 
-  const inputOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const tagsInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuizData((prev) => ({
       ...prev,
-      title: e.target.value,
+      tags: [...prev.tags, e.target.value],
     }));
   };
+
   return (
     <div className="flex flex-row justify-between items-center p-2 h-[8vh]">
       <button
@@ -37,7 +38,7 @@ function QuestionSettings({
           type="text"
           placeholder="Add Tag"
           className="w-20 p-2 text-sm border-2 "
-          onChange={inputOnChangeHandler}
+          onChange={tagsInputChangeHandler}
         />
         <button
           className="bg-gray-800  gap-2 text-white rounded-md flex justify-center items-center px-3 py-2"

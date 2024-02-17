@@ -15,9 +15,9 @@ export const questionTime = {
   "60 Sec": "60",
 };
 export const questionDifficulty = {
-  Easy: "Easy",
-  Medium: "Medium",
-  Hard: "Hard",
+  Easy: "easy",
+  Medium: "medium",
+  Hard: "hard",
 };
 
 export const questionSubject = {
@@ -29,11 +29,11 @@ export const questionSubject = {
 };
 
 export const gradeLevel = {
-  "Grade A": "gradeA",
-  "Grade B": "gradeB",
-  "Grade C": "gradeC",
-  "Grade D": "gradeD",
-  "Grade E": "gradeE",
+  "Grade A": "A",
+  "Grade B": "B",
+  "Grade C": "C",
+  "Grade D": "D",
+  "Grade E": "E",
 };
 
 export const language = {

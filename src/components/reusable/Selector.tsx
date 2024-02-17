@@ -7,24 +7,30 @@ interface SelectorProps {
   options: { [key: string]: string };
   name: string;
   width?: string;
+  selectedOption: string;
+  onSelect: (option: { key: string; value: string }) => void;
 }
 
-function Selector({ options, name, width }: SelectorProps) {
+function Selector({
+  options,
+  name,
+  width,
+  selectedOption,
+  onSelect,
+}: SelectorProps) {
   const { quizData, setQuizData } = useQuizData();
   const [selected, setSelected] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(name || "Select");
   const selectorRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = () => {
     setSelected(!selected);
   };
 
-  const handleOption = (option: { key: string; value: string }) => {
-    setSelectedOption(option.key);
-    setSelected(!selected);
-    setQuizData({ ...quizData, [name.toLocaleLowerCase()]: option.value });
-    console.log({ quizData });
-  };
+  // const handleOption = (option: { key: string; value: string }) => {
+  //   setSelected(!selected);
+  //   setQuizData({ ...quizData, [keyName]: option.value });
+  //   console.log({ quizData });
+  // };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -55,7 +61,7 @@ function Selector({ options, name, width }: SelectorProps) {
           className="flex justify-between min-w-20 w-full  gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           id="menu-button"
         >
-          {selectedOption}
+          {selectedOption || name}
           {selected ? (
             <IoIosArrowUp className="text-xl" />
           ) : (
@@ -80,7 +86,7 @@ function Selector({ options, name, width }: SelectorProps) {
                 name={name}
                 id={`menu-item-${index}`}
                 onClick={() =>
-                  handleOption({ key: option, value: options[option] })
+                  onSelect({ key: option, value: options[option] })
                 }
               >
                 {option}

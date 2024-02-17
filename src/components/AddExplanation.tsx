@@ -1,24 +1,32 @@
+import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImageOn } from 'react-icons/ci';
 import { FaArrowLeft } from 'react-icons/fa';
 import { IoMdSave } from 'react-icons/io';
+import { MdCrop, MdImage } from 'react-icons/md';
+
+import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 import TextEditor from './reusable/TextEditor';
 
 interface AddExplanationProps {
   backToQuestion: () => void;
-  saveExplanation: () => void;
   deleteExplanation: () => void;
 }
 
 function AddExplanation({
   backToQuestion,
-  saveExplanation,
   deleteExplanation,
 }: AddExplanationProps) {
+  const { activeQuestion } = useActiveQuestion();
+  const { quizData, setQuizData } = useQuizData();
+  const activeQuestionData = quizData.questions[activeQuestion];
   const [imgSrc, setImgSrc] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [explanationValue, setExplanationValue] = useState(
+    activeQuestionData.explanation.text || "",
+  );
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
@@ -35,6 +43,25 @@ function AddExplanation({
       fileInputRef.current.click();
     }
   };
+
+  const saveExplanation = () => {
+    setQuizData((prev) => ({
+      ...prev,
+      questions: prev.questions.map((question, index) =>
+        index === activeQuestion
+          ? {
+              ...question,
+              explanation: {
+                text: explanationValue,
+                image: "Image added",
+              },
+            }
+          : question,
+      ),
+    }));
+    backToQuestion();
+  };
+
   return (
     <div className="p-2 min-h-[74vh]">
       <div className="flex flex-col gap-4 p-2 rounded bg-gray-900 text-white h-full">
@@ -72,13 +99,12 @@ function AddExplanation({
           <div className="lg:w-1/4 w-full flex flex-col justify-center items-center gap-2 border-2 border-dashed rounded p-5">
             {imgSrc ? (
               <div className="flex flex-col gap-2 h-full">
-                <div className="flex gap-2 relative top-0">
+                <div className="flex flex-row justify-end gap-2 text-white">
                   <button
-                    className="flex gap-2 items-center justify-center w-1/2 px-2 py-2 border rounded bg-green-600 border-none hover:bg-red-700"
+                    className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
                     onClick={onClickUpload}
                   >
-                    <CiImageOn className="text-xl" />
-                    <span className="hidden sm:block text-sm">Change</span>
+                    <MdImage className="text-xl" />
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -88,17 +114,24 @@ function AddExplanation({
                     />
                   </button>
                   <button
-                    className="flex gap-2 items-center justify-center w-1/2 px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
+                    className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
+                    // onClick={() => setShowImageCropModal(true)}
+                  >
+                    <MdCrop className="text-xl" />
+                  </button>
+                  <button
+                    className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
                     onClick={() => setImgSrc("")}
                   >
                     <AiOutlineDelete className="text-xl" />
-                    <span className="hidden sm:block text-sm">Remove</span>
                   </button>
                 </div>
 
-                <img
+                <Image
                   src={imgSrc}
                   alt="quiz cover"
+                  width={100}
+                  height={100}
                   className="rounded-md w-auto h-auto object-cover bg-gray-900 border-2 border-gray-900"
                 />
               </div>
@@ -115,7 +148,7 @@ function AddExplanation({
                   onChange={onSelectFile}
                 />
                 <CiImageOn className="text-8xl" />
-                <span className="text-sm">Add Cover Image</span>
+                <span className="text-sm">Add Image</span>
               </div>
             )}
           </div>
@@ -124,6 +157,7 @@ function AddExplanation({
               placeholder="Add an explanation to your answer"
               editorStyles="h-full p-4 w-auto focus:bg-gray-800 bg-gray-900"
               toolbarStyles=" rounded-lg p-4 w-full"
+              onChange={(e) => setExplanationValue(e.target.value)}
             />
           </div>
         </div>

@@ -12,6 +12,7 @@ interface TextEditorProps {
   deleteButtonHandler?: () => void;
   isDeleteButton?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
 }
 
 const TextEditor = ({
@@ -22,6 +23,7 @@ const TextEditor = ({
   isDeleteButton,
   deleteButtonHandler,
   onChange,
+  value,
 }: TextEditorProps) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -64,6 +66,8 @@ const TextEditor = ({
         className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
         placeholder={placeholder}
         onChange={onChange}
+        value={value}
+        autoFocus
       />
       {showModal && <ImageUploadModal onClose={() => setShowModal(false)} />}
     </div>

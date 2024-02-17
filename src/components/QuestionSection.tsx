@@ -5,7 +5,7 @@ import {
     gradeLevel, language, questionDifficulty, questionPoints, questionSubject, questionTime,
     questionType, visibility
 } from '@/data/selectors';
-import { useQuizData } from '@/provider/QuizDataProvider';
+import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 import AddExplanation from './AddExplanation';
 import CreateQuestion from './CreateQuestion';
@@ -15,9 +15,11 @@ import QuizSettings from './QuizSettings';
 
 function QuestionSection() {
   const { quizData, setQuizData } = useQuizData();
+  const { activeQuestion } = useActiveQuestion();
   const [showModal, setShowModal] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [showCreateQuestion, setShowCreateQuestion] = useState(true);
+  const activeQuestionData = quizData.questions[activeQuestion];
 
   const showExplanationHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -27,6 +29,25 @@ function QuestionSection() {
 
   const showCreateQuestionHandler = () => {
     setShowCreateQuestion(true);
+    setShowExplanation(false);
+  };
+
+  const deleteExplanationHandler = () => {
+    // set empty explanation to active question
+    setQuizData((prev) => ({
+      ...prev,
+      questions: prev.questions.map((question, index) =>
+        index === activeQuestion
+          ? {
+              ...question,
+              explanation: {
+                text: "",
+                image: "",
+              },
+            }
+          : question,
+      ),
+    }));
     setShowExplanation(false);
   };
 
@@ -48,8 +69,7 @@ function QuestionSection() {
       {showExplanation && (
         <AddExplanation
           backToQuestion={showCreateQuestionHandler}
-          saveExplanation={showCreateQuestionHandler}
-          deleteExplanation={() => setShowExplanation(false)}
+          deleteExplanation={deleteExplanationHandler}
         />
       )}
       {showModal && (

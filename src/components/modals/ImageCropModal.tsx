@@ -1,8 +1,7 @@
 import 'react-image-crop/dist/ReactCrop.css';
 
+import Image from 'next/image';
 import React, { useRef, useState } from 'react';
-import { FcAddImage } from 'react-icons/fc';
-import { IoMdSave } from 'react-icons/io';
 import { MdDone } from 'react-icons/md';
 import ReactCrop, { centerCrop, Crop, makeAspectCrop, PixelCrop } from 'react-image-crop';
 
@@ -35,6 +34,7 @@ function ImageCropModal({ imgSrc, onClose }: ImageCropModalProps) {
 
   const imgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>();
+  const [croppedImage, setCroppedImage] = useState<string | null>();
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const aspect = 16 / 9;
@@ -74,6 +74,27 @@ function ImageCropModal({ imgSrc, onClose }: ImageCropModalProps) {
     });
   };
 
+  function convertToPixelCrop(crop: Crop): any {
+    if (crop.unit === "%") {
+      // Conversion logic here
+      // You'll need to convert the percentage values to pixel values
+      // This will depend on the size of the image you're working with
+    } else {
+      return crop as PixelCrop;
+    }
+  }
+  const doneButtonHandler = async () => {
+    let crop: any = { unit: "%", width: 50, height: 50 };
+    let pixelCrop: PixelCrop = convertToPixelCrop(crop);
+
+    if (imgRef.current && crop) {
+      const croppedImage = await getCroppedImg(imgRef.current, pixelCrop);
+      setCroppedImage(croppedImage);
+      console.log(croppedImage);
+    }
+    onClose();
+  };
+
   return (
     <Modal
       title="Crop Image"
@@ -90,12 +111,14 @@ function ImageCropModal({ imgSrc, onClose }: ImageCropModalProps) {
               minHeight={100}
               className="rounded max-w-[400px] max-h-[400px] object-cover overflow-hidden"
             >
-              <img
+              <Image
                 ref={imgRef}
                 src={imgSrc}
                 alt="Crop"
                 onLoad={onImageLoad}
                 style={{ maxWidth: "100%" }}
+                width={400}
+                height={400}
                 className="rounded object-cover"
               />
             </ReactCrop>
@@ -104,7 +127,7 @@ function ImageCropModal({ imgSrc, onClose }: ImageCropModalProps) {
         <div className="flex flex-row justify-center items-center gap-2 text-black">
           <button
             className="flex flex-row justify-center items-center gap-2 py-2 w-1/3 bg-purple-600 text-white rounded hover:shadow-md"
-            onClick={onClose}
+            onClick={doneButtonHandler}
           >
             <MdDone className="text-2xl" />
             <span>Done</span>
