@@ -19,3 +19,31 @@ export const questionDifficulty = {
   Medium: "Medium",
   Hard: "Hard",
 };
+
+export const questionSubject = {
+  Math: "math",
+  Science: "science",
+  Art: "art",
+  Music: "music",
+  Computer: "computer",
+};
+
+export const gradeLevel = {
+  "Grade A": "gradeA",
+  "Grade B": "gradeB",
+  "Grade C": "gradeC",
+  "Grade D": "gradeD",
+  "Grade E": "gradeE",
+};
+
+export const language = {
+  English: "english",
+  Spanish: "spanish",
+  Hindi: "hindi",
+  Urdu: "urdu",
+};
+
+export const visibility = {
+  Public: "public",
+  Private: "private",
+};

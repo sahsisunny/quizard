@@ -1,5 +1,5 @@
 "use client";
-import QuestionSection from '@/components/QuestionSection/QuestionSection';
+import QuestionSection from '@/components/questionSection/QuestionSection';
 import SideBar from '@/components/sidebar/SideBar';
 import TopBarComponent from '@/components/TopBar';
 

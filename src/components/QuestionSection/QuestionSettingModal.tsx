@@ -1,6 +1,7 @@
-import { title } from 'process';
 import React from 'react';
 import { CiImageOn } from 'react-icons/ci';
+
+import { gradeLevel, language, questionSubject, visibility } from '@/data/selectors';
 
 import Selector from '../Selector';
 
@@ -15,37 +16,6 @@ function QuestionSettingModal({
   inputOnChange,
   saveOnClick,
 }: QuestionSettingModalProps) {
-  const questionSubject = {
-    Math: "math",
-    Science: "science",
-    English: "english",
-    History: "history",
-    Geography: "geography",
-    Art: "art",
-    Music: "music",
-    "Computer Science": "computer",
-  };
-
-  const gradeLevel = {
-    "Grade A": "gradeA",
-    "Grade B": "gradeB",
-    "Grade C": "gradeC",
-    "Grade D": "gradeD",
-    "Grade E": "gradeE",
-  };
-
-  const language = {
-    English: "english",
-    Spanish: "spanish",
-    Hindi: "hindi",
-    Urdu: "urdu",
-  };
-
-  const visibility = {
-    Public: "public",
-    Private: "private",
-  };
-
   const handleSelectAll = (e: any) => {
     e.target.select();
   };

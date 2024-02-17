@@ -2,12 +2,17 @@ import React from 'react';
 import { FaLightbulb } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 
-interface QuestionTitleProps {
+interface QuestionSettingsProps {
   title: string;
   onClickTitle: () => void;
+  addExplanationHandler: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
 
-function QuestionTitle({ title, onClickTitle }: QuestionTitleProps) {
+function QuestionSettings({
+  title,
+  onClickTitle,
+  addExplanationHandler,
+}: QuestionSettingsProps) {
   const inputOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
   };
@@ -29,11 +34,16 @@ function QuestionTitle({ title, onClickTitle }: QuestionTitleProps) {
         />
         <button className="bg-gray-800  gap-2 text-white rounded-md flex justify-center items-center px-3 py-2">
           <FaLightbulb />
-          <span className="hidden xl:block text-sm">Add Explanation</span>
+          <span
+            className="hidden xl:block text-sm"
+            onClick={addExplanationHandler}
+          >
+            Add Explanation
+          </span>
         </button>
       </div>
     </div>
   );
 }
 
-export default QuestionTitle;
+export default QuestionSettings;

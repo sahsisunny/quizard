@@ -7,7 +7,7 @@ import { questionDifficulty, questionPoints, questionTime, questionType } from '
 
 import Selector from '../Selector';
 
-function QuestionSelectors() {
+function QuestionSettings() {
   const [showModal, setShowModal] = useState(false);
 
   const onClickClose = () => {
@@ -51,4 +51,4 @@ function QuestionSelectors() {
   );
 }
 
-export default QuestionSelectors;
+export default QuestionSettings;
