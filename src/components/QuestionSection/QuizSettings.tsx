@@ -32,14 +32,12 @@ function QuestionSettings({
           className="w-20 p-2 text-sm border-2 rounded-md"
           onChange={inputOnChangeHandler}
         />
-        <button className="bg-gray-800  gap-2 text-white rounded-md flex justify-center items-center px-3 py-2">
+        <button
+          className="bg-gray-800  gap-2 text-white rounded-md flex justify-center items-center px-3 py-2"
+          onClick={addExplanationHandler}
+        >
           <FaLightbulb />
-          <span
-            className="hidden xl:block text-sm"
-            onClick={addExplanationHandler}
-          >
-            Add Explanation
-          </span>
+          <span className="hidden xl:block text-sm">Add Explanation</span>
         </button>
       </div>
     </div>
