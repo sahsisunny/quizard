@@ -22,7 +22,7 @@ function AddExplanation({
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
-  const [imgSrc, setImgSrc] = useState("");
+  const [imgSrc, setImgSrc] = useState(quizData.questions[activeQuestion].explanation.image || "");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [explanationValue, setExplanationValue] = useState(
     activeQuestionData?.explanation.text || "",
@@ -53,7 +53,7 @@ function AddExplanation({
               ...question,
               explanation: {
                 text: explanationValue,
-                image: "Image added",
+                image: imgSrc,
               },
             }
           : question,
@@ -158,6 +158,7 @@ function AddExplanation({
               editorStyles="h-full p-4 w-auto focus:bg-gray-800 bg-gray-900"
               toolbarStyles=" rounded-lg p-4 w-full"
               onChange={(e) => setExplanationValue(e.target.value)}
+              value={quizData.questions[activeQuestion].explanation.text || ""}
             />
           </div>
         </div>

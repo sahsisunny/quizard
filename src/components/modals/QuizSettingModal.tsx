@@ -50,6 +50,7 @@ function QuizSettingModal({
     } else {
       setErrorMessages("");
     }
+    setQuizData({ ...quizData, coverImage: imgSrc });
     onClose();
   };
 
@@ -61,7 +62,6 @@ function QuizSettingModal({
       });
       reader.readAsDataURL(e.target.files[0]);
     }
-    setQuizData({ ...quizData, coverImage: imgSrc });
   }
 
   const onClickUpload = () => {
@@ -70,19 +70,9 @@ function QuizSettingModal({
     }
   };
 
-  const onSubjectSelect = (option: { key: string; value: string }) => {
+  const onSelectorChangeHandler = (option: { key: string; value: string }) => {
     setQuizData({ ...quizData, subject: option.value });
-  };
-  const onGradeSelect = (option: { key: string; value: string }) => {
-    setQuizData({ ...quizData, grade: option.value });
-  };
-  const onLanguageSelect = (option: { key: string; value: string }) => {
-    setQuizData({ ...quizData, language: option.value });
-  };
-  const onVisibilitySelect = (option: { key: string; value: string }) => {
-    setQuizData({ ...quizData, visibility: option.value });
-    console.log({ quizData });
-  };
+  }
 
   return (
     <>
@@ -99,25 +89,25 @@ function QuizSettingModal({
           <Selector
             options={questionSubject}
             name="Subject"
-            onSelect={onSubjectSelect}
+            onSelect={onSelectorChangeHandler}
             selectedOption={quizData.subject}
           />
           <Selector
             options={gradeLevel}
             name="Grade"
-            onSelect={onGradeSelect}
+            onSelect={onSelectorChangeHandler}
             selectedOption={quizData.grade}
           />
           <Selector
             options={language}
             name="Language"
-            onSelect={onLanguageSelect}
+            onSelect={onSelectorChangeHandler}
             selectedOption={quizData.language}
           />
           <Selector
             options={visibility}
             name="Visibility"
-            onSelect={onVisibilitySelect}
+            onSelect={onSelectorChangeHandler}
             selectedOption={quizData.visibility}
           />
         </div>

@@ -1,12 +1,34 @@
-import React from 'react';
-import { IoIosAddCircleOutline, IoMdSave, IoMdSearch } from 'react-icons/io';
-import { MdDelete } from 'react-icons/md';
+import React from "react";
+import { IoIosAddCircleOutline, IoMdSave, IoMdSearch } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
 
-import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
+import { useActiveQuestion, useQuizData } from "@/provider/QuizDataProvider";
 
 function SideBar() {
   const { quizData, setQuizData } = useQuizData();
   const { activeQuestion, setActiveQuestion } = useActiveQuestion();
+  const addNewQuestion = () => {
+    setQuizData({
+      ...quizData,
+      questions: [
+        ...quizData.questions,
+        {
+          question: "",
+          options: [],
+          answer: [],
+          type: "Type",
+          points: "Points",
+          difficulty: "Difficulty",
+          time: "Time",
+          explanation: {
+            text: "",
+            image: "",
+          },
+        },
+      ],
+    });
+    setActiveQuestion(quizData.questions.length);
+  };
   return (
     <div className="flex xl:flex-col flex-row  justify-between xl:w-[14.5rem] w-full bg-gray-100  border-e-4 gap-2 p-2  border-r border-black xl:h-[90vh] h-auto sticky bottom-0 xl:top-14 z-20 ">
       <div className="flex xl:flex-col flex-row items-end gap-2  overflow-y-auto no-scrollbar">
@@ -30,7 +52,7 @@ function SideBar() {
               <button
                 onClick={() => {
                   const updatedQuestions = quizData.questions.filter(
-                    (_, i) => i !== index,
+                    (_, i) => i !== index
                   );
                   setQuizData({ ...quizData, questions: updatedQuestions });
                 }}
@@ -45,9 +67,15 @@ function SideBar() {
                   ? "border-2 border-green-500 box-border"
                   : ""
               }`}
+              style={{
+                backgroundImage: `url(${quizData.coverImage})`,
+                backgroundSize: "stretch",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
             >
               <span
-                className={`text-center text-sm overflow-hidden p-2
+                className={`text-center text-sm overflow-hidden p-2 w-full h-full bg-black opacity-70 text-white
                  ${activeQuestion === index ? "text-green-500" : ""}`}
               >
                 {quizData.questions[index].question ||
@@ -58,28 +86,7 @@ function SideBar() {
         ))}
         <div
           className="min-h-[6rem]  min-w-[10rem] border-2 border-gray-500 rounded flex justify-center items-center cursor-pointer hover:shadow-md"
-          onClick={() => {
-            setQuizData({
-              ...quizData,
-              questions: [
-                ...quizData.questions,
-                {
-                  question: "",
-                  options: [],
-                  answer: [],
-                  type: "Type",
-                  points: "Points",
-                  difficulty: "Difficulty",
-                  time: "Time",
-                  explanation: {
-                    text: "",
-                    image: "",
-                  },
-                },
-              ],
-            });
-            setActiveQuestion(quizData.questions.length);
-          }}
+          onClick={addNewQuestion}
         >
           <IoIosAddCircleOutline className="text-4xl" />
         </div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
-import { useQuizData } from '@/provider/QuizDataProvider';
-
 interface SelectorProps {
   options: { [key: string]: string };
   name: string;
@@ -18,7 +16,6 @@ function Selector({
   selectedOption,
   onSelect,
 }: SelectorProps) {
-  const { quizData, setQuizData } = useQuizData();
   const [selected, setSelected] = useState(false);
   const selectorRef = useRef<HTMLDivElement>(null);
 
