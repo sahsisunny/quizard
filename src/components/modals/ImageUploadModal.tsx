@@ -1,22 +1,27 @@
+import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 import { FcAddImage } from 'react-icons/fc';
 
-import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
-
+import ImageEditTool from '../reusable/ImageEditTool';
 import Modal from '../reusable/Modal';
 import ImageCropModal from './ImageCropModal';
 
 interface ImageUploadModalProps {
-  keyName?: string;
-  index?: number;
   onClose: () => void;
+  SetImage: (src: string) => void;
+  deleteOnClick: () => void;
+  doneOnClick: () => void;
 }
 
-function ImageUploadModal({ onClose, index, keyName }: ImageUploadModalProps) {
-  const { activeQuestion } = useActiveQuestion();
-  const { quizData, setQuizData } = useQuizData();
+function ImageUploadModal({
+  onClose,
+  SetImage,
+  deleteOnClick,
+  doneOnClick,
+}: ImageUploadModalProps) {
   const [imgSrc, setImgSrc] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showImageCropModal, setShowImageCropModal] = useState(false);
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
@@ -26,18 +31,16 @@ function ImageUploadModal({ onClose, index, keyName }: ImageUploadModalProps) {
       );
       reader.readAsDataURL(e.target.files[0]);
     }
-    if (keyName) {
-      setQuizData((prev) => ({
-        ...prev,
-        [keyName]: imgSrc,
-      }));
-    }
   }
 
-  const onClickUpload = () => {
+  const imageSelectHandler = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  const onCropComplete = (base64Image: string) => {
+    setImgSrc(base64Image);
   };
 
   return (
@@ -48,23 +51,59 @@ function ImageUploadModal({ onClose, index, keyName }: ImageUploadModalProps) {
     >
       <div
         className="flex flex-row justify-between items-center gap-2 p-2 rounded border-dashed border-2 border-black text-black cursor-pointer"
-        onClick={onClickUpload}
+        onClick={imageSelectHandler}
       >
-        <div className="flex flex-row items-center gap-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={onSelectFile}
-          />
-          <FcAddImage size={50} />
-          <span>Click to upload</span>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span>JPEG, JPG PNG</span>
-        </div>
+        {imgSrc ? (
+          <div className="h-50 w-full flex justify-between items-center relative">
+            <Image
+              src={imgSrc}
+              alt="uploaded image"
+              width={300}
+              height={300}
+              className="rounded-lg"
+            />
+            <div className="absolute top-0 right-0">
+              <ImageEditTool
+                toolContainerStyle="flex-row justify-between "
+                buttonStyle="w-fit flex gap-2 items-center justify-center px-2 py-2 border rounded border-none  text-white"
+                deleteOnClick={deleteOnClick}
+                setShowImageCropModal={setShowImageCropModal}
+                setImgSrc={setImgSrc}
+                doneOnClick={() => {
+                  console.log("done clicked");
+                  SetImage(imgSrc);
+                  doneOnClick();
+                  onClose();
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-row items-center gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={onSelectFile}
+              />
+              <FcAddImage size={50} />
+              <span>Click to upload</span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span>JPEG, JPG PNG</span>
+            </div>
+          </>
+        )}
       </div>
+      {showImageCropModal && (
+        <ImageCropModal
+          imgSrc={imgSrc}
+          onClose={() => setShowImageCropModal(false)}
+          onCropComplete={onCropComplete}
+        />
+      )}
     </Modal>
   );
 }

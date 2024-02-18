@@ -1,15 +1,22 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosAdd } from 'react-icons/io';
+import { MdImage } from 'react-icons/md';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
+import ImageUploadModal from './modals/ImageUploadModal';
 import TextEditor from './reusable/TextEditor';
 
 function CreateQuestion() {
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
+  const [showImageUploadModal, setImageUploadModal] = useState(false);
+  const [imgSrc, setImgSrc] = useState(
+    activeQuestionData?.question.image || "",
+  );
 
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
 
@@ -83,16 +90,22 @@ function CreateQuestion() {
     }
   };
 
-  function questionImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    let imgString =
-      e.target.files && e.target.files.length > 0
-        ? URL.createObjectURL(e.target.files[0])
-        : "";
+  const questionImageSelect = () => {
+    console.log("quesytion imahge ");
+    console.log(imgSrc);
 
     const updatedQuestions = [...quizData.questions];
-    updatedQuestions[activeQuestion].question.image = imgString;
+    updatedQuestions[activeQuestion].question.image = "";
+
+    updatedQuestions[activeQuestion].question.image = imgSrc;
     setQuizData({ ...quizData, questions: updatedQuestions });
-  }
+  };
+
+  const deleteQuestionImage = () => {
+    const updatedQuestions = [...quizData.questions];
+    updatedQuestions[activeQuestion].question.image = "";
+    setQuizData({ ...quizData, questions: updatedQuestions });
+  };
 
   const optionsImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -112,7 +125,22 @@ function CreateQuestion() {
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
         <div className="flex lg:flex-row flex-col gap-2 h-1/2">
           {activeQuestionData.question.image && (
-            <div className="flex items-center justify-center lg:w-auto w-full h-full">
+            <div className="relative flex items-center justify-center lg:w-auto w-full h-full">
+              <div className="absolute right-0 top-0 flex flex-col gap-2 text-white">
+                <button
+                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
+                  onClick={() => setImageUploadModal(true)}
+                >
+                  <MdImage className="text-xl" />
+                </button>
+
+                <button
+                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
+                  onClick={deleteQuestionImage}
+                >
+                  <AiOutlineDelete className="text-xl" />
+                </button>
+              </div>
               <Image
                 src={activeQuestionData.question.image}
                 alt="quiz cover"
@@ -130,7 +158,7 @@ function CreateQuestion() {
               onChange={(e) => onQuestionChange(e.target.value)}
               value={activeQuestionData.question.text || ""}
               isAutoFocus={true}
-              imageButtonHandler={(e: any) => questionImageSelect(e)}
+              onImageClickHandler={() => setImageUploadModal(true)}
             />
           </div>
         </div>
@@ -180,7 +208,7 @@ function CreateQuestion() {
               )}
               onCheckCheckbox={(e) => onCheckCheckboxHandler(e, index)}
               isDisabled={!activeQuestionData.options[index]}
-              imageButtonHandler={(e: any) => optionsImageUpload(e, index)}
+              onImageClickHandler={() => setImageUploadModal(true)}
             />
           ))}
           {editors.length < 5 && (
@@ -193,6 +221,14 @@ function CreateQuestion() {
           )}
         </div>
       </div>
+      {showImageUploadModal && (
+        <ImageUploadModal
+          onClose={() => setImageUploadModal(false)}
+          SetImage={setImgSrc}
+          deleteOnClick={() => setImgSrc("")}
+          doneOnClick={questionImageSelect}
+        />
+      )}
     </div>
   );
 }

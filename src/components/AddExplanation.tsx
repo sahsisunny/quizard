@@ -8,6 +8,9 @@ import { MdCrop, MdImage } from 'react-icons/md';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
+import ImageCropModal from './modals/ImageCropModal';
+import ImageUploadModal from './modals/ImageUploadModal';
+import ImageEditTool from './reusable/ImageEditTool';
 import TextEditor from './reusable/TextEditor';
 
 interface AddExplanationProps {
@@ -23,27 +26,15 @@ function AddExplanation({
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
   const [imgSrc, setImgSrc] = useState(
-    quizData.questions[activeQuestion].explanation.image || "",
+    activeQuestionData.explanation.image || "",
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showImageUploadModal, setImageUploadModal] = useState(false);
   const [explanationValue, setExplanationValue] = useState(
     activeQuestionData?.explanation.text || "",
   );
 
-  function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files.length > 0) {
-      const reader = new FileReader();
-      reader.addEventListener("load", () =>
-        setImgSrc(reader.result?.toString() || ""),
-      );
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  }
-
   const onClickUpload = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    setImageUploadModal(true);
   };
 
   const saveExplanation = () => {
@@ -62,6 +53,10 @@ function AddExplanation({
       ),
     }));
     backToQuestion();
+  };
+
+  const onDoneClickHandler = () => {
+    setImageUploadModal(false);
   };
 
   return (
@@ -107,19 +102,6 @@ function AddExplanation({
                     onClick={onClickUpload}
                   >
                     <MdImage className="text-xl" />
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={onSelectFile}
-                    />
-                  </button>
-                  <button
-                    className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
-                    // onClick={() => setShowImageCropModal(true)}
-                  >
-                    <MdCrop className="text-xl" />
                   </button>
                   <button
                     className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
@@ -128,7 +110,6 @@ function AddExplanation({
                     <AiOutlineDelete className="text-xl" />
                   </button>
                 </div>
-
                 <Image
                   src={imgSrc}
                   alt="quiz cover"
@@ -142,13 +123,6 @@ function AddExplanation({
                 className="flex flex-col justify-center items-center gap-2 cursor-pointer"
                 onClick={onClickUpload}
               >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={onSelectFile}
-                />
                 <CiImageOn className="text-8xl" />
                 <span className="text-sm">Add Image</span>
               </div>
@@ -160,11 +134,19 @@ function AddExplanation({
               editorStyles="h-full p-4 w-auto focus:bg-gray-800 bg-gray-900"
               toolbarStyles=" rounded-lg p-4 w-full"
               onChange={(e) => setExplanationValue(e.target.value)}
-              value={quizData.questions[activeQuestion].explanation.text || ""}
+              value={activeQuestionData?.explanation.text || ""}
             />
           </div>
         </div>
       </div>
+      {showImageUploadModal && (
+        <ImageUploadModal
+          onClose={() => setImageUploadModal(false)}
+          SetImage={setImgSrc}
+          deleteOnClick={() => setImgSrc("")}
+          doneOnClick={onDoneClickHandler}
+        />
+      )}
     </div>
   );
 }
