@@ -50,26 +50,26 @@ function QuestionSettings({
           options={questionType}
           name="Type"
           width="w-[100px]"
-          onSelect={(option) => updateQuestion('type', option.value)}
+          onSelect={(option) => updateQuestion("type", option.value)}
           selectedOption={activeQuestionData.type || "Type"}
         />
         <div className="lg:flex flex-row gap-2 hidden">
           <Selector
             options={questionPoints}
             name="Points"
-            onSelect={(option) => updateQuestion('points', option.value)}
+            onSelect={(option) => updateQuestion("points", option.value)}
             selectedOption={activeQuestionData.points || "Points"}
           />
           <Selector
             options={questionTime}
             name="Time"
-            onSelect={(option) => updateQuestion('time', option.value)}
+            onSelect={(option) => updateQuestion("time", option.value)}
             selectedOption={activeQuestionData.time || "Time"}
           />
           <Selector
             options={questionDifficulty}
             name="Difficulty"
-            onSelect={(option) => updateQuestion('difficulty', option.value)}
+            onSelect={(option) => updateQuestion("difficulty", option.value)}
             selectedOption={activeQuestionData.difficulty || "Difficulty"}
           />
         </div>
@@ -94,19 +94,19 @@ function QuestionSettings({
             <Selector
               options={questionPoints}
               name="Points"
-              onSelect={(option) => updateQuestion('points', option.value)}
+              onSelect={(option) => updateQuestion("points", option.value)}
               selectedOption={activeQuestionData.points || "Points"}
             />
             <Selector
               options={questionTime}
               name="Time"
-              onSelect={(option) => updateQuestion('time', option.value)}
+              onSelect={(option) => updateQuestion("time", option.value)}
               selectedOption={activeQuestionData.time || "Time"}
             />
             <Selector
               options={questionDifficulty}
               name="Difficulty"
-              onSelect={(option) => updateQuestion('difficulty', option.value)}
+              onSelect={(option) => updateQuestion("difficulty", option.value)}
               selectedOption={activeQuestionData.difficulty || "Difficulty"}
             />
           </div>

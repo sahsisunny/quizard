@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { IoImage } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
 import { Tooltip } from 'react-tooltip';
-
-import ImageUploadModal from '../modals/ImageUploadModal';
 
 interface TextEditorProps {
   editorStyles?: string;
@@ -20,6 +18,7 @@ interface TextEditorProps {
   onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isDisabled?: boolean;
+  imageButtonHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextEditor = ({
@@ -37,9 +36,15 @@ const TextEditor = ({
   onCheckCheckbox,
   onCheckRadio,
   isDisabled,
+  imageButtonHandler,
 }: TextEditorProps) => {
-  const [showModal, setShowModal] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const onClickUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
   return (
     <div
       className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
@@ -52,7 +57,14 @@ const TextEditor = ({
           <i>I</i>
         </button>
         <button className="p-2 underline">U</button>
-        <button className="p-2" onClick={() => setShowModal(true)}>
+        <button className="p-2" onClick={onClickUpload}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={imageButtonHandler}
+          />
           <IoImage />
         </button>
         {isDeleteButton && (
@@ -101,7 +113,6 @@ const TextEditor = ({
         value={value}
         autoFocus={isAutoFocus}
       />
-      {showModal && <ImageUploadModal onClose={() => setShowModal(false)} />}
     </div>
   );
 };

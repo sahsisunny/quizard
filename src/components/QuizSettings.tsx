@@ -2,7 +2,7 @@ import React from 'react';
 import { FaLightbulb } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 
-import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
+import { useQuizData } from '@/provider/QuizDataProvider';
 
 interface QuestionSettingsProps {
   title: string;

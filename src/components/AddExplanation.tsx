@@ -22,7 +22,9 @@ function AddExplanation({
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
-  const [imgSrc, setImgSrc] = useState(quizData.questions[activeQuestion].explanation.image || "");
+  const [imgSrc, setImgSrc] = useState(
+    quizData.questions[activeQuestion].explanation.image || "",
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [explanationValue, setExplanationValue] = useState(
     activeQuestionData?.explanation.text || "",

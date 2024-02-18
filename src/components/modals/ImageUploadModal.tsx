@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FcAddImage } from 'react-icons/fc';
 
+import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
+
 import Modal from '../reusable/Modal';
 import ImageCropModal from './ImageCropModal';
-import { useQuizData, useActiveQuestion } from '@/provider/QuizDataProvider';
 
 interface ImageUploadModalProps {
   keyName?: string;
@@ -11,9 +12,9 @@ interface ImageUploadModalProps {
   onClose: () => void;
 }
 
-function ImageUploadModal({ onClose,index, keyName }: ImageUploadModalProps) {
+function ImageUploadModal({ onClose, index, keyName }: ImageUploadModalProps) {
   const { activeQuestion } = useActiveQuestion();
-  const {quizData, setQuizData} = useQuizData();
+  const { quizData, setQuizData } = useQuizData();
   const [imgSrc, setImgSrc] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,9 +26,8 @@ function ImageUploadModal({ onClose,index, keyName }: ImageUploadModalProps) {
       );
       reader.readAsDataURL(e.target.files[0]);
     }
-    // store the image in the quizData
-    // If have keyname
-    if(keyName){
+    console.log({ keyName });
+    if (keyName) {
       setQuizData((prev) => ({
         ...prev,
         [keyName]: imgSrc,
@@ -66,7 +66,6 @@ function ImageUploadModal({ onClose,index, keyName }: ImageUploadModalProps) {
           <span>JPEG, JPG PNG</span>
         </div>
       </div>
-      {imgSrc && <ImageCropModal imgSrc={imgSrc} onClose={onClose} />}
     </Modal>
   );
 }

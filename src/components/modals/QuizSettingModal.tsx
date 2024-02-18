@@ -72,7 +72,7 @@ function QuizSettingModal({
 
   const onSelectorChangeHandler = (option: { key: string; value: string }) => {
     setQuizData({ ...quizData, subject: option.value });
-  }
+  };
 
   return (
     <>

@@ -1,29 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-interface Question {
-  question: string;
-  type: string;
-  points: string;
-  time: string;
-  difficulty: string;
-  options: string[];
-  answer: string[];
-  explanation: {
-    text: string;
-    image?: string;
-  };
-}
-
-interface QuizSettings {
-  title: string;
-  coverImage: string;
-  subject: string;
-  grade: string;
-  language: string;
-  visibility: string;
-  questions: Question[];
-  tags: string[];
-}
+import { Question, QuizSettings } from '@/type/questions';
 
 interface QuizDataContext {
   quizData: QuizSettings;

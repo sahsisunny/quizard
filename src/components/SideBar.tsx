@@ -1,8 +1,8 @@
-import React from "react";
-import { IoIosAddCircleOutline, IoMdSave, IoMdSearch } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
+import React from 'react';
+import { IoIosAddCircleOutline, IoMdSave, IoMdSearch } from 'react-icons/io';
+import { MdDelete } from 'react-icons/md';
 
-import { useActiveQuestion, useQuizData } from "@/provider/QuizDataProvider";
+import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 function SideBar() {
   const { quizData, setQuizData } = useQuizData();
@@ -13,7 +13,9 @@ function SideBar() {
       questions: [
         ...quizData.questions,
         {
-          question: "",
+          question: {
+            text: "",
+          },
           options: [],
           answer: [],
           type: "Type",
@@ -52,7 +54,7 @@ function SideBar() {
               <button
                 onClick={() => {
                   const updatedQuestions = quizData.questions.filter(
-                    (_, i) => i !== index
+                    (_, i) => i !== index,
                   );
                   setQuizData({ ...quizData, questions: updatedQuestions });
                 }}
@@ -68,17 +70,16 @@ function SideBar() {
                   : ""
               }`}
               style={{
-                backgroundImage: `url(${quizData.coverImage})`,
-                backgroundSize: "stretch",
+                backgroundImage: `url(${quizData.questions[index].question.image})`,
+                backgroundSize: "cover",
                 backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
               }}
             >
               <span
                 className={`text-center text-sm overflow-hidden p-2 w-full h-full bg-black opacity-70 text-white
                  ${activeQuestion === index ? "text-green-500" : ""}`}
               >
-                {quizData.questions[index].question ||
+                {quizData.questions[index].question.text ||
                   "Question " + (index + 1)}
               </span>
             </div>

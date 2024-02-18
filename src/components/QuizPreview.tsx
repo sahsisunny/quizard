@@ -11,11 +11,10 @@ const QuizPreview = () => {
         <div className="bg-gray-700 text-white px-4 py-2 flex justify-between items-center sticky top-[10vh]">
           <div className="flex items-center">
             <Image
-              src="/quiz.jpg"
-              alt="quiz logo"
+              src={quiz.coverImage || "/quiz.jpg"}
+              alt="quiz cover image"
               width={50}
               height={50}
-              className="rounded-full"
             />
             <div className="flex flex-col ml-2">
               <h2 className="font-semibold text-lg">{quiz.title}</h2>
@@ -70,7 +69,7 @@ const QuizPreview = () => {
               <div key={index} className="mb-4">
                 <div className="flex md:flex-row flex-col-reverse justify-between md:items-center border-b-2 border-gray-500">
                   <h3 className="text-lg font-semibold mb-1">
-                    Q.{index + 1}: {question.question}
+                    Q.{index + 1}: {question.question.text}
                   </h3>
                   <span className="text-sm font-semibold wfull text-end">
                     {question.points} Points | {question.time} sec |{" "}
@@ -86,7 +85,7 @@ const QuizPreview = () => {
                         "text-green-500 font-semibold"
                       }`}
                     >
-                      {option}
+                      {option.text}
                     </li>
                   ))}
                 </ol>
