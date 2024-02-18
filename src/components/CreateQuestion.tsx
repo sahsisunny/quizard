@@ -50,7 +50,6 @@ function CreateQuestion() {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].options[index].text = option;
     setQuizData({ ...quizData, questions: updatedQuestions });
-    console.log({ quizData });
   };
 
   const onCheckRadioHandler = (
@@ -171,11 +170,13 @@ function CreateQuestion() {
               placeholder={`Type option ${index + 1} here`}
               onChange={(e) => onOptionChange(e.target.value, index)}
               value={activeQuestionData.options[index]?.text || ""}
-              radioChecked={activeQuestionData.answer.includes(
-                activeQuestionData.options[index],
+              radioChecked={activeQuestionData.answer.some(
+                (answer) =>
+                  answer.text === activeQuestionData.options[index]?.text,
               )}
-              checkboxChecked={activeQuestionData.answer.includes(
-                activeQuestionData.options[index],
+              checkboxChecked={activeQuestionData.answer.some(
+                (answer) =>
+                  answer.text === activeQuestionData.options[index]?.text,
               )}
               onCheckCheckbox={(e) => onCheckCheckboxHandler(e, index)}
               isDisabled={!activeQuestionData.options[index]}
