@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosAdd } from 'react-icons/io';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
@@ -13,7 +13,16 @@ interface CreateQuestionProps {
 function CreateQuestion({ image }: CreateQuestionProps) {
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
+  const activeQuestionData = quizData.questions[activeQuestion];
+  if (!activeQuestionData) return null;
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
+
+  useEffect(() => {
+    const newEditors = activeQuestionData.options.map((_, index) => ({
+      id: index,
+    }));
+    setEditors(newEditors.length > 0 ? newEditors : [{ id: 1 }, { id: 2 }]);
+  }, [activeQuestionData]);
 
   const handleAddEditor = () => {
     if (editors.length < 5) {
@@ -31,8 +40,6 @@ function CreateQuestion({ image }: CreateQuestionProps) {
       );
     }
   };
-  const activeQuestionData = quizData.questions[activeQuestion];
-  if (!activeQuestionData) return null;
 
   const onQuestionChange = (question: string) => {
     const updatedQuestions = [...quizData.questions];
