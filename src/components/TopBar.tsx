@@ -1,10 +1,13 @@
-import React from 'react';
 import { IoIosArrowBack, IoIosPlay } from 'react-icons/io';
 import { MdPublish } from 'react-icons/md';
 
 import { useQuizData } from '@/provider/QuizDataProvider';
 
-function TopBarComponent() {
+function TopBarComponent({
+  previewButtonHandler,
+}: {
+  previewButtonHandler: () => void;
+}) {
   const { quizData } = useQuizData();
   return (
     <div className="flex flex-row justify-between items-center p-2 border-b border-black h-[10vh] sticky top-0 bg-white z-40">
@@ -15,7 +18,10 @@ function TopBarComponent() {
         </button>
       </div>
       <div className="flex flex-row items-center gap-2">
-        <button className="flex flex-row items-center gap-2 py-2 px-3 bg-gray-200 rounded hover:shadow-md">
+        <button
+          className="flex flex-row items-center gap-2 py-2 px-3 bg-gray-200 rounded hover:shadow-md"
+          onClick={previewButtonHandler}
+        >
           <IoIosPlay className="sm:text-2xl text-md" />
           <h1 className="hidden sm:block">Preview</h1>
         </button>

@@ -26,11 +26,9 @@ function Selector({
     setSelected(!selected);
   };
 
-  // const handleOption = (option: { key: string; value: string }) => {
-  //   setSelected(!selected);
-  //   setQuizData({ ...quizData, [keyName]: option.value });
-  //   console.log({ quizData });
-  // };
+  const getKeyByValue = (object: { [key: string]: string }, value: string) => {
+    return Object.keys(object).find((key) => object[key] === value);
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -61,7 +59,7 @@ function Selector({
           className="flex justify-between min-w-20 w-full  gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           id="menu-button"
         >
-          {selectedOption || name}
+          {getKeyByValue(options, selectedOption) || name}
           {selected ? (
             <IoIosArrowUp className="text-xl" />
           ) : (
@@ -81,7 +79,7 @@ function Selector({
           Object.keys(options).map((option, index) => (
             <div className="py-1" role="none" key={index}>
               <button
-                className="w-fit text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
                 name={name}
                 id={`menu-item-${index}`}

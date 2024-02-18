@@ -56,7 +56,6 @@ function SideBar() {
             </div>
           </div>
         ))}
-        {/* new Question Button */}
         <div
           className="min-h-[6rem]  min-w-[10rem] border-2 border-gray-500 rounded flex justify-center items-center cursor-pointer hover:shadow-md"
           onClick={() => {
@@ -79,12 +78,12 @@ function SideBar() {
                 },
               ],
             });
+            setActiveQuestion(quizData.questions.length);
           }}
         >
           <IoIosAddCircleOutline className="text-4xl" />
         </div>
       </div>
-      {/* Buttons */}
       <div className="gap-2 flex flex-col justify-around">
         <button className="flex flex-row items-center justify-center gap-2 py-2  w-full bg-gray-200 rounded hover:shadow-md">
           <IoMdSearch className="xl:text-xl text-md" />
