@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { FaDatabase } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosPlay } from 'react-icons/io';
-import { MdPublish } from 'react-icons/md';
+import { MdCleaningServices, MdPublish } from 'react-icons/md';
 
 import { dummyTestData } from '@/data/questions';
 import { useQuizData } from '@/provider/QuizDataProvider';
@@ -11,9 +12,25 @@ function TopBarComponent({
   previewButtonHandler: () => void;
 }) {
   const { quizData, setQuizData } = useQuizData();
+  const [showClearDataButton, setShowClearDataButton] = useState(false);
 
   const addTestDataToContext = (data: any) => {
     setQuizData(data);
+    setShowClearDataButton(!showClearDataButton);
+  };
+
+  const clearDataButtonHandler = () => {
+    setQuizData({
+      title: "",
+      coverImage: "",
+      subject: "",
+      grade: "",
+      language: "",
+      visibility: "",
+      questions: [],
+      tags: [],
+    });
+    setShowClearDataButton(!showClearDataButton);
   };
 
   return (
@@ -25,13 +42,23 @@ function TopBarComponent({
         </button>
       </div>
       <div className="flex flex-row items-center gap-2">
-        <button
-          className="flex flex-row items-center gap-2 py-2 px-3 bg-gray-200 rounded hover:shadow-md"
-          onClick={() => addTestDataToContext(dummyTestData)}
-        >
-          <FaDatabase className="sm:text-2xl text-md" />
-          <h1 className="hidden sm:block">Add Test Data</h1>
-        </button>
+        {!showClearDataButton ? (
+          <button
+            className="flex flex-row items-center gap-2 py-2 px-3 bg-blue-600 text-white hover:bg-blue-700 rounded hover:shadow-md"
+            onClick={() => addTestDataToContext(dummyTestData)}
+          >
+            <FaDatabase className="sm:text-2xl text-md" />
+            <h1 className="hidden sm:block">Add Test Data</h1>
+          </button>
+        ) : (
+          <button
+            className="flex flex-row items-center gap-2 py-2 px-3 bg-red-600 text-white hover:bg-red-700 rounded hover:shadow-md"
+            onClick={clearDataButtonHandler}
+          >
+            <MdCleaningServices className="sm:text-2xl text-md" />
+            <h1 className="hidden sm:block">Clear Data</h1>
+          </button>
+        )}
         <button
           className="flex flex-row items-center gap-2 py-2 px-3 bg-gray-200 rounded hover:shadow-md"
           onClick={previewButtonHandler}

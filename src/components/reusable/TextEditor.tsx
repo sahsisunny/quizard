@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoImage } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
+import { Tooltip } from 'react-tooltip';
 
 import ImageUploadModal from '../modals/ImageUploadModal';
 
@@ -60,26 +61,39 @@ const TextEditor = ({
           </button>
         )}
         {type === "SINGLE" ? (
-          <input
-            type="radio"
-            name="option"
-            className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
-            checked={radioChecked}
-            onChange={onCheckRadio}
-            disabled={isDisabled}
-          />
+          <>
+            <input
+              type="radio"
+              name="option"
+              className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
+              checked={radioChecked}
+              onChange={onCheckRadio}
+              disabled={isDisabled}
+              data-tooltip-id="radio-tooltip"
+              data-tooltip-content={
+                isDisabled ? "Empty options cannot be selected" : ""
+              }
+            />
+            <Tooltip id="radio-tooltip" />
+          </>
         ) : type === "MULTIPLE" ? (
-          <input
-            type="checkbox"
-            name="option"
-            className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
-            checked={checkboxChecked}
-            onChange={onCheckCheckbox}
-            disabled={isDisabled}
-          />
+          <>
+            <input
+              type="checkbox"
+              name="option"
+              className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
+              checked={checkboxChecked}
+              onChange={onCheckCheckbox}
+              disabled={isDisabled}
+              data-tooltip-id="checkbox-tooltip"
+              data-tooltip-content={
+                isDisabled ? "Empty options cannot be selected" : ""
+              }
+            />
+            {isDisabled && <Tooltip id="checkbox-tooltip" />}
+          </>
         ) : null}
       </div>
-
       <textarea
         className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
         placeholder={placeholder}

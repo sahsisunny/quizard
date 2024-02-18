@@ -30,14 +30,14 @@ export const dummyTestData = {
       time: "60",
       difficulty: "Easy",
       options: ["Monitor", "Keyboard", "Printer", "Speaker"],
-      answer: ["Keyboard"],
+      answer: ["Keyboard", "Printer"],
       explanation: {
         text: "The keyboard is an input device used to input data into the computer, whereas the others listed (Monitor, Printer, Speaker) are output devices used to display or produce information.",
       },
     },
     {
       question: "What is the main function of an operating system?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Medium",
@@ -54,7 +54,7 @@ export const dummyTestData = {
     },
     {
       question: "Which storage device has the fastest access time?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Medium",
@@ -71,7 +71,7 @@ export const dummyTestData = {
     },
     {
       question: "What is the purpose of RAM in a computer?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Hard",
@@ -101,7 +101,7 @@ export const dummyTestData = {
     {
       question:
         "What is the default file extension for a Microsoft Word document?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Easy",
@@ -113,7 +113,7 @@ export const dummyTestData = {
     },
     {
       question: "What is the purpose of a router in a computer network?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Medium",
@@ -142,7 +142,7 @@ export const dummyTestData = {
     },
     {
       question: "What is the function of the BIOS in a computer?",
-      type: "Single Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Medium",
