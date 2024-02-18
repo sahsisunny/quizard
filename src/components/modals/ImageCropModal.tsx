@@ -90,7 +90,6 @@ function ImageCropModal({ imgSrc, onClose }: ImageCropModalProps) {
     if (imgRef.current && crop) {
       const croppedImage = await getCroppedImg(imgRef.current, pixelCrop);
       setCroppedImage(croppedImage);
-      console.log(croppedImage);
     }
     onClose();
   };

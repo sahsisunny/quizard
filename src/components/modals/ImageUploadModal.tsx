@@ -26,7 +26,6 @@ function ImageUploadModal({ onClose, index, keyName }: ImageUploadModalProps) {
       );
       reader.readAsDataURL(e.target.files[0]);
     }
-    console.log({ keyName });
     if (keyName) {
       setQuizData((prev) => ({
         ...prev,
