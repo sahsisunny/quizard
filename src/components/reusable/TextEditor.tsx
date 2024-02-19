@@ -15,8 +15,8 @@ interface TextEditorProps {
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string;
   isAutoFocus?: boolean;
-  checkboxChecked?: boolean;
-  radioChecked?: boolean;
+  isCheckboxChecked?: boolean;
+  isRadioChecked?: boolean;
   onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isDisabled?: boolean;
@@ -33,8 +33,8 @@ const TextEditor = ({
   onChange,
   value,
   isAutoFocus,
-  checkboxChecked,
-  radioChecked,
+  isCheckboxChecked,
+  isRadioChecked,
   onCheckCheckbox,
   onCheckRadio,
   isDisabled,
@@ -66,7 +66,7 @@ const TextEditor = ({
               type="radio"
               name="option"
               className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
-              checked={radioChecked}
+              checked={isRadioChecked}
               onChange={onCheckRadio}
               disabled={isDisabled}
               data-tooltip-id="radio-tooltip"
@@ -82,7 +82,7 @@ const TextEditor = ({
               type="checkbox"
               name="option"
               className="w-4 h-4 absolute top-0 right-0 animate-pulse cursor-pointer"
-              checked={checkboxChecked}
+              checked={isCheckboxChecked}
               onChange={onCheckCheckbox}
               disabled={isDisabled}
               data-tooltip-id="checkbox-tooltip"

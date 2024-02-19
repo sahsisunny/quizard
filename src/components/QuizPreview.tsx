@@ -81,8 +81,9 @@ const QuizPreview = () => {
                     <li
                       key={optionIndex}
                       className={`${
-                        question.answer.includes(option) &&
-                        "text-green-500 font-semibold"
+                        question.answer.some(
+                          (ans) => ans.text === option.text
+                        ) && "text-green-500 font-semibold"
                       }`}
                     >
                       {option.text}
