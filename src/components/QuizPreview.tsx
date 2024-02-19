@@ -90,6 +90,7 @@ const QuizPreview = () => {
                 </div>
                 <ol className="list-inside list-decimal">
                   {question.options.map((option, optionIndex) => (
+      
                     <li
                       key={optionIndex}
                       className={`${
@@ -99,6 +100,16 @@ const QuizPreview = () => {
                       }`}
                     >
                       {option.text}
+                      {option.image && (
+                        <div className="flex justify-center">
+                          <Image
+                            src={option.image}
+                            alt="option image"
+                            width={100}
+                            height={100}
+                          />
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ol>

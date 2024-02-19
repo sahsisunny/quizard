@@ -15,6 +15,10 @@ function CreateQuestion() {
   const activeQuestionData = quizData.questions[activeQuestion];
   const [showQuestionImageUploadModal, setShowQuestionImageUploadModal] =
     useState(false);
+  const [showOptionImageUploadModal, setShowOptionImageUploadModal] = useState(
+    new Array(5).fill(false)
+  );
+  const [optionImages, setOptionImages] = useState(new Array(5).fill(""));
   const [questionImage, setQuestionImage] = useState("");
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
 
@@ -29,8 +33,23 @@ function CreateQuestion() {
       } else {
         setQuestionImage("");
       }
+
+      if (activeQuestionData.options) {
+        const newOptionImages = activeQuestionData.options.map(
+          (option) => option.image
+        );
+        setOptionImages(newOptionImages);
+      }
     }
   }, [activeQuestionData, quizData]);
+
+  const setImageBasedOnOption = (index: number, image: string) => {
+    setOptionImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages[index] = image;
+      return newImages;
+    });
+  };
 
   if (!activeQuestionData) return null;
   const handleAddEditor = () => {
@@ -45,7 +64,7 @@ function CreateQuestion() {
   const deleteEditorHandler = (index: number) => {
     if (editors.length > 2) {
       setEditors((prevEditors) =>
-        prevEditors.filter((editor) => editor.id !== index),
+        prevEditors.filter((editor) => editor.id !== index)
       );
       const updatedQuestions = [...quizData.questions];
       updatedQuestions[activeQuestion].options = updatedQuestions[
@@ -69,7 +88,7 @@ function CreateQuestion() {
 
   const onCheckRadioClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     if (e.target.checked) {
       const optionValue = activeQuestionData.options[index];
@@ -82,7 +101,7 @@ function CreateQuestion() {
 
   const onCheckCheckboxClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     const optionValue = activeQuestionData.options[index];
     if (e.target.checked) {
@@ -109,6 +128,24 @@ function CreateQuestion() {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
     setQuestionImage("");
+    setQuizData({ ...quizData, questions: updatedQuestions });
+  };
+
+  const onOptionImageSaveHandler = (index: number) => {
+    const updatedQuestions = [...quizData.questions];
+    updatedQuestions[activeQuestion].options[index].image = "";
+    updatedQuestions[activeQuestion].options[index].image = optionImages[index];
+    setQuizData({ ...quizData, questions: updatedQuestions });
+  };
+
+  const onDeleteOptionImageHandler = (index: number) => {
+    const updatedQuestions = [...quizData.questions];
+    updatedQuestions[activeQuestion].options[index].image = "";
+    setOptionImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages[index] = "";
+      return newImages;
+    });
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
@@ -165,51 +202,132 @@ function CreateQuestion() {
         {/* Options */}
         <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full">
           {editors.map((editor, index) => (
-            <TextEditor
+            <div
               key={editor.id}
-              deleteButtonHandler={() => deleteEditorHandler(editor.id)}
-              isDeleteButton={editors.length > 2}
-              toolbarStyles={
+              className={`relative w-full h-full fex flex-row rounded p-2 ${
                 index === 0
                   ? "bg-green-900"
                   : index === 1
+                  ? "bg-blue-900"
+                  : index === 2
+                  ? "bg-fuchsia-900"
+                  : index === 3
+                  ? "bg-purple-900"
+                  : "bg-yellow-900"
+              }`}
+            >
+              <TextEditor
+                key={editor.id}
+                deleteButtonHandler={() => deleteEditorHandler(editor.id)}
+                isDeleteButton={editors.length > 2}
+                toolbarStyles={
+                  index === 0
+                    ? "bg-green-900"
+                    : index === 1
                     ? "bg-blue-900"
                     : index === 2
-                      ? "bg-fuchsia-900"
-                      : index === 3
-                        ? "bg-purple-900"
-                        : "bg-yellow-900"
-              }
-              editorStyles={
-                index === 0
-                  ? "focus:bg-green-800 bg-green-900"
-                  : index === 1
+                    ? "bg-fuchsia-900"
+                    : index === 3
+                    ? "bg-purple-900"
+                    : "bg-yellow-900"
+                }
+                editorStyles={
+                  index === 0
+                    ? "focus:bg-green-800 bg-green-900"
+                    : index === 1
                     ? "focus:bg-blue-800 bg-blue-900"
                     : index === 2
-                      ? "focus:bg-fuchsia-800 bg-fuchsia-900"
-                      : index === 3
-                        ? "focus:bg-purple-800 bg-purple-900"
-                        : "focus:bg-yellow-800 bg-yellow-900"
-              }
-              type={
-                activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
-              }
-              onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
-              placeholder={`Type option ${index + 1} here`}
-              onChange={(e) => onOptionValueChange(e.target.value, index)}
-              value={activeQuestionData.options[index]?.text || ""}
-              isRadioChecked={activeQuestionData.answer.some(
-                (answer) =>
-                  answer.text === activeQuestionData.options[index]?.text,
+                    ? "focus:bg-fuchsia-800 bg-fuchsia-900"
+                    : index === 3
+                    ? "focus:bg-purple-800 bg-purple-900"
+                    : "focus:bg-yellow-800 bg-yellow-900"
+                }
+                type={
+                  activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
+                }
+                onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
+                placeholder={`Type option ${index + 1} here`}
+                onChange={(e) => onOptionValueChange(e.target.value, index)}
+                value={activeQuestionData.options[index]?.text || ""}
+                isRadioChecked={activeQuestionData.answer.some(
+                  (answer) =>
+                    answer.text === activeQuestionData.options[index]?.text
+                )}
+                isCheckboxChecked={activeQuestionData.answer.some(
+                  (answer) =>
+                    answer.text === activeQuestionData.options[index]?.text
+                )}
+                onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
+                isDisabled={!activeQuestionData.options[index]}
+                isImageButton={optionImages[index] ? false : true}
+                onImageClickHandler={() => {
+                  setShowOptionImageUploadModal((prev) => {
+                    const newModals = [...prev];
+                    newModals[index] = true;
+                    return newModals;
+                  });
+                }}
+              />
+              {optionImages[index] && (
+                <div className="relative flex items-center justify-center w-full h-fit ">
+                  <div className="absolute right-0 top-0 flex flex-col gap-2 text-white p-2">
+                    <button
+                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
+                      onClick={() => onOptionImageSaveHandler(index)}
+                    >
+                      <MdSave className="text-xl" />
+                    </button>
+                    <button
+                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
+                      onClick={() => {
+                        setShowOptionImageUploadModal((prev) => {
+                          const newModals = [...prev];
+                          newModals[index] = true;
+                          return newModals;
+                        });
+                      }}
+                    >
+                      <MdImage className="text-xl" />
+                    </button>
+                    <button
+                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
+                      onClick={() => onDeleteOptionImageHandler(index)}
+                    >
+                      <AiOutlineDelete className="text-xl" />
+                    </button>
+                  </div>
+                  <Image
+                    src={optionImages[index]}
+                    alt="quiz cover"
+                    width={300}
+                    height={300}
+                    className="rounded-md lg:w-[400px] w-full h-full  object-cover "
+                  />
+                </div>
               )}
-              isCheckboxChecked={activeQuestionData.answer.some(
-                (answer) =>
-                  answer.text === activeQuestionData.options[index]?.text,
+              {showOptionImageUploadModal[index] && (
+                <ImageUploadModal
+                  onClose={() => {
+                    setShowOptionImageUploadModal((prev) => {
+                      const newModals = [...prev];
+                      newModals[index] = false;
+                      return newModals;
+                    });
+                  }}
+                  SetImage={(image: string) => {
+                    setImageBasedOnOption(index, image);
+                  }}
+                  deleteOnClick={() => onDeleteOptionImageHandler(index)}
+                  doneOnClick={() => {
+                    setShowOptionImageUploadModal((prev) => {
+                      const newModals = [...prev];
+                      newModals[index] = false;
+                      return newModals;
+                    });
+                  }}
+                />
               )}
-              onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
-              isDisabled={!activeQuestionData.options[index]}
-              isImageButton={true}
-            />
+            </div>
           ))}
           {editors.length < 5 && (
             <div
