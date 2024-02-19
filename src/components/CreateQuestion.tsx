@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosAdd } from 'react-icons/io';
-import { MdImage } from 'react-icons/md';
+import { MdImage, MdSave } from 'react-icons/md';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
@@ -14,10 +14,7 @@ function CreateQuestion() {
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
   const [showImageUploadModal, setImageUploadModal] = useState(false);
-  const [imgSrc, setImgSrc] = useState(
-    activeQuestionData?.question.image || ""
-  );
-
+  const [imgSrc, setImgSrc] = useState("");
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
 
   useEffect(() => {
@@ -26,8 +23,13 @@ function CreateQuestion() {
         id: index,
       }));
       setEditors(newEditors.length > 0 ? newEditors : [{ id: 1 }, { id: 2 }]);
+      if (activeQuestionData.question.image) {
+        setImgSrc(activeQuestionData.question.image);
+      } else {
+        setImgSrc("");
+      }
     }
-  }, [activeQuestionData]);
+  }, [activeQuestionData, quizData]);
 
   if (!activeQuestionData) return null;
   const handleAddEditor = () => {
@@ -36,7 +38,7 @@ function CreateQuestion() {
     }
   };
 
-  const handleDeleteEditor = (id: number) => {
+  const deleteEditorHandler = (id: number) => {
     if (editors.length > 2) {
       setEditors((prevEditors) =>
         prevEditors.filter((editor) => editor.id !== id)
@@ -44,13 +46,13 @@ function CreateQuestion() {
     }
   };
 
-  const onQuestionChange = (question: string) => {
+  const onQuestionValueChange = (question: string) => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.text = question;
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  const onOptionChange = (optionValue: string, index: number) => {
+  const onOptionValueChange = (optionValue: string, index: number) => {
     const updatedQuestions = [...quizData.questions];
     if (activeQuestionData.options[index]) {
       activeQuestionData.options[index].text = optionValue;
@@ -60,7 +62,7 @@ function CreateQuestion() {
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  const onCheckRadioHandler = (
+  const onCheckRadioClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
@@ -73,7 +75,7 @@ function CreateQuestion() {
     }
   };
 
-  const onCheckCheckboxHandler = (
+  const onCheckCheckboxClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
@@ -91,39 +93,34 @@ function CreateQuestion() {
     }
   };
 
-  const questionImageSelect = () => {
+  const onQuestionImageSaveHandler = () => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
     updatedQuestions[activeQuestion].question.image = imgSrc;
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  const deleteQuestionImage = () => {
+  const onDeleteQuestionImageHandler = () => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
+    setImgSrc("");
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  const optionsImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    let imgString =
-      e.target.files && e.target.files.length > 0
-        ? URL.createObjectURL(e.target.files[0])
-        : "";
-
-    const updatedQuestions = [...quizData.questions];
-    updatedQuestions[activeQuestion].options[index].image = imgString;
-    setQuizData({ ...quizData, questions: updatedQuestions });
-  };
   return (
     <div className="flex flex-col items-center w-full p-2 min-h-[74vh]">
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
         <div className="flex lg:flex-row flex-col gap-2 h-1/2">
-          {activeQuestionData.question.image && (
+          {imgSrc && (
             <div className="relative flex items-center justify-center lg:w-auto w-full h-full">
               <div className="absolute right-0 top-0 flex flex-col gap-2 text-white">
+                <button
+                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
+                  onClick={onQuestionImageSaveHandler}
+                >
+                  <MdSave className="text-xl" />
+                </button>
+
                 <button
                   className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
                   onClick={() => setImageUploadModal(true)}
@@ -132,13 +129,13 @@ function CreateQuestion() {
                 </button>
                 <button
                   className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
-                  onClick={deleteQuestionImage}
+                  onClick={onDeleteQuestionImageHandler}
                 >
                   <AiOutlineDelete className="text-xl" />
                 </button>
               </div>
               <Image
-                src={activeQuestionData.question.image}
+                src={imgSrc}
                 alt="quiz cover"
                 width={300}
                 height={300}
@@ -151,9 +148,9 @@ function CreateQuestion() {
               toolbarStyles="bg-red-900 border h-auto"
               editorStyles="focus:bg-red-800 bg-red-900 "
               placeholder="Type question here"
-              onChange={(e) => onQuestionChange(e.target.value)}
               value={activeQuestionData.question.text || ""}
               isAutoFocus={true}
+              onChange={(e) => onQuestionValueChange(e.target.value)}
               onImageClickHandler={() => setImageUploadModal(true)}
             />
           </div>
@@ -163,7 +160,7 @@ function CreateQuestion() {
           {editors.map((editor, index) => (
             <TextEditor
               key={editor.id}
-              deleteButtonHandler={() => handleDeleteEditor(editor.id)}
+              deleteButtonHandler={() => deleteEditorHandler(editor.id)}
               isDeleteButton={editors.length > 2}
               toolbarStyles={
                 index === 0
@@ -190,9 +187,9 @@ function CreateQuestion() {
               type={
                 activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
               }
-              onCheckRadio={(e) => onCheckRadioHandler(e, index)}
+              onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
               placeholder={`Type option ${index + 1} here`}
-              onChange={(e) => onOptionChange(e.target.value, index)}
+              onChange={(e) => onOptionValueChange(e.target.value, index)}
               value={activeQuestionData.options[index]?.text || ""}
               isRadioChecked={activeQuestionData.answer.some(
                 (answer) =>
@@ -202,7 +199,7 @@ function CreateQuestion() {
                 (answer) =>
                   answer.text === activeQuestionData.options[index]?.text
               )}
-              onCheckCheckbox={(e) => onCheckCheckboxHandler(e, index)}
+              onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
               isDisabled={!activeQuestionData.options[index]}
               onImageClickHandler={() => setImageUploadModal(true)}
             />
@@ -222,7 +219,7 @@ function CreateQuestion() {
           onClose={() => setImageUploadModal(false)}
           SetImage={setImgSrc}
           deleteOnClick={() => setImgSrc("")}
-          doneOnClick={questionImageSelect}
+          doneOnClick={() => setImageUploadModal(false)}
         />
       )}
     </div>

@@ -70,7 +70,6 @@ function ImageUploadModal({
                 setShowImageCropModal={setShowImageCropModal}
                 setImgSrc={setImgSrc}
                 doneOnClick={() => {
-                  console.log("done clicked");
                   SetImage(imgSrc);
                   doneOnClick();
                   onClose();

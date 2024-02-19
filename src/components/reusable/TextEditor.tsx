@@ -6,27 +6,30 @@ import { Tooltip } from 'react-tooltip';
 import ImageUploadModal from '../modals/ImageUploadModal';
 
 interface TextEditorProps {
+  // Strings
   editorStyles?: string;
   toolbarStyles?: string;
   placeholder?: string;
-  type?: "SINGLE" | "MULTIPLE";
-  deleteButtonHandler?: () => void;
-  isDeleteButton?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string;
+  type?: "SINGLE" | "MULTIPLE";
+  // Boolean
+  isDeleteButton?: boolean;
   isAutoFocus?: boolean;
   isCheckboxChecked?: boolean;
   isRadioChecked?: boolean;
+  isDisabled?: boolean;
+  // Functions
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isDisabled?: boolean;
+  deleteButtonHandler?: () => void;
   onImageClickHandler?: () => void;
 }
 
 const TextEditor = ({
   editorStyles,
   toolbarStyles,
-  placeholder = "Type your question here",
+  placeholder = "Type here",
   type,
   isDeleteButton,
   deleteButtonHandler,

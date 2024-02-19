@@ -66,11 +66,23 @@ const QuizPreview = () => {
           <div className="mb-6">
             <h2 className="text-xl font-bold mb-2 underline">Questions</h2>
             {quiz.questions.map((question, index) => (
-              <div key={index} className="mb-4">
+              <div key={index} className="mb-4  p-2 rounded-lg shadow-lg">
                 <div className="flex md:flex-row flex-col-reverse justify-between md:items-center border-b-2 border-gray-500">
-                  <h3 className="text-lg font-semibold mb-1">
-                    Q.{index + 1}: {question.question.text}
-                  </h3>
+                  <div className="w-auto">
+                    <h3 className="text-lg font-semibold mb-1">
+                      Q.{index + 1}: {question.question.text}
+                    </h3>
+                    {question.question?.image && (
+                      <div className="flex justify-center">
+                        <Image
+                          src={question.question.image}
+                          alt="question image"
+                          width={200}
+                          height={200}
+                        />
+                      </div>
+                    )}
+                  </div>
                   <span className="text-sm font-semibold wfull text-end">
                     {question.points} Points | {question.time} sec |{" "}
                     {question.difficulty}
