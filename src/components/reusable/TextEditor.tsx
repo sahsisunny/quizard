@@ -6,20 +6,20 @@ import { MdDelete } from 'react-icons/md';
 import { Tooltip } from 'react-tooltip';
 
 interface TextEditorProps {
-  // Strings
+// Strings
   editorStyles?: string;
   toolbarStyles?: string;
   placeholder?: string;
   value?: string;
   type?: "SINGLE" | "MULTIPLE";
-  // Boolean
+// Boolean
   isDeleteButton?: boolean;
   isImageButton?: boolean;
   isAutoFocus?: boolean;
   isCheckboxChecked?: boolean;
   isRadioChecked?: boolean;
   isDisabled?: boolean;
-  // Functions
+// Functions
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,21 +29,21 @@ interface TextEditorProps {
 }
 
 const TextEditor = ({
-  editorStyles,
-  toolbarStyles,
+  editorStyles = "",
+  toolbarStyles = "",
   placeholder = "Type here",
+  value = "",
   type,
-  isDeleteButton,
+  isDeleteButton = false,
   deleteButtonHandler,
   onChange,
-  value,
-  isAutoFocus,
-  isCheckboxChecked,
-  isRadioChecked,
+  isAutoFocus = false,
+  isCheckboxChecked = false,
+  isRadioChecked = false,
   isImageButton = false,
   onCheckCheckbox,
   onCheckRadio,
-  isDisabled,
+  isDisabled = false,
   onImageClickHandler,
   imageDeleteHandler,
 }: TextEditorProps) => {
@@ -82,7 +82,7 @@ const TextEditor = ({
             <MdDelete />
           </button>
         )}
-        {type === "SINGLE" ? (
+        {type === "SINGLE" && (
           <>
             <input
               type="radio"
@@ -98,7 +98,8 @@ const TextEditor = ({
             />
             <Tooltip id="radio-tooltip" />
           </>
-        ) : type === "MULTIPLE" ? (
+        )}
+        {type === "MULTIPLE" && (
           <>
             <input
               type="checkbox"
@@ -114,7 +115,7 @@ const TextEditor = ({
             />
             {isDisabled && <Tooltip id="checkbox-tooltip" />}
           </>
-        ) : null}
+        )}
       </div>
       <textarea
         className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}

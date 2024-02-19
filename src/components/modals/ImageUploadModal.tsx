@@ -50,17 +50,17 @@ function ImageUploadModal({
       onClose={onClose}
     >
       <div
-        className="flex flex-row justify-between items-center gap-2 p-2 rounded border-dashed border-2 border-black text-black cursor-pointer"
+        className=" h-fit flex flex-row justify-center items-center gap-2 p-2 rounded border-dashed border-2 border-black text-black cursor-pointer"
         onClick={imageSelectHandler}
       >
         {imgSrc ? (
-          <div className="h-50 w-full flex justify-between items-center relative">
+          <div className="h-auto w-full flex justify-center items-center relative">
             <Image
               src={imgSrc}
               alt="uploaded image"
               width={300}
               height={300}
-              className="rounded-lg"
+              className="max-h-[400px] w-auto h-auto object-fit rounded-md"
             />
             <div className="absolute top-0 right-0">
               <ImageEditTool

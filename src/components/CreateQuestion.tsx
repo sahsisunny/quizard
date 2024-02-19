@@ -1,47 +1,77 @@
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosAdd } from 'react-icons/io';
-import { MdImage, MdSave } from 'react-icons/md';
 
+import { editorBackColors, editorColors } from '@/data/colors';
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 import ImageUploadModal from './modals/ImageUploadModal';
+import ImageComponent from './reusable/ImageComponent';
 import TextEditor from './reusable/TextEditor';
+
+interface Editor {
+  id: number;
+}
+
+interface Option {
+  text: string;
+  image: string;
+}
+
+interface Question {
+  text: string;
+  image: string;
+}
+
+interface QuizQuestion {
+  question: Question;
+  options: Option[];
+  answer: Option[];
+  type: "SINGLE" | "MULTIPLE";
+}
 
 function CreateQuestion() {
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
-  const activeQuestionData = quizData.questions[activeQuestion];
+  const activeQuestionData = quizData.questions[activeQuestion] as QuizQuestion;
   const [showQuestionImageUploadModal, setShowQuestionImageUploadModal] =
     useState(false);
   const [showOptionImageUploadModal, setShowOptionImageUploadModal] = useState(
-    new Array(5).fill(false)
+    new Array<boolean>(5).fill(false)
   );
-  const [optionImages, setOptionImages] = useState(new Array(5).fill(""));
+  const [optionImages, setOptionImages] = useState<string[]>(
+    new Array(5).fill("")
+  );
   const [questionImage, setQuestionImage] = useState("");
-  const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
+  const [editors, setEditors] = useState<Editor[]>([{ id: 1 }, { id: 2 }]);
 
   useEffect(() => {
     if (activeQuestionData) {
-      const newEditors = activeQuestionData?.options.map((_, index) => ({
-        id: index,
-      }));
-      setEditors(newEditors.length > 0 ? newEditors : [{ id: 1 }, { id: 2 }]);
-      if (activeQuestionData.question.image) {
-        setQuestionImage(activeQuestionData.question.image);
-      } else {
-        setQuestionImage("");
-      }
-
-      if (activeQuestionData.options) {
-        const newOptionImages = activeQuestionData.options.map(
-          (option) => option.image
-        );
-        setOptionImages(newOptionImages);
-      }
+      updateEditors(activeQuestionData);
+      updateImages(activeQuestionData);
     }
   }, [activeQuestionData, quizData]);
+
+  const updateEditors = (activeQuestionData: QuizQuestion) => {
+    const newEditors = activeQuestionData?.options.map((_, index) => ({
+      id: index,
+    }));
+    setEditors(newEditors.length > 0 ? newEditors : [{ id: 1 }, { id: 2 }]);
+  };
+
+  const updateImages = (activeQuestionData: QuizQuestion) => {
+    if (activeQuestionData.question.image) {
+      setQuestionImage(activeQuestionData.question.image);
+    } else {
+      setQuestionImage("");
+    }
+
+    if (activeQuestionData.options) {
+      const newOptionImages = activeQuestionData.options.map(
+        (option) => option.image
+      );
+      setOptionImages(newOptionImages);
+    }
+  };
 
   const setImageBasedOnOption = (index: number, image: string) => {
     setOptionImages((prevImages) => {
@@ -117,7 +147,7 @@ function CreateQuestion() {
     }
   };
 
-  const onQuestionImageSaveHandler = () => {
+  const onSaveQuestionImageHandler = () => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
     updatedQuestions[activeQuestion].question.image = questionImage;
@@ -131,7 +161,7 @@ function CreateQuestion() {
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
-  const onOptionImageSaveHandler = (index: number) => {
+  const onSaveOptionImageHandler = (index: number) => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].options[index].image = "";
     updatedQuestions[activeQuestion].options[index].image = optionImages[index];
@@ -149,182 +179,99 @@ function CreateQuestion() {
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
+  const onImageUploadModalClose = (index: number) => {
+    setShowOptionImageUploadModal((prev) => {
+      const newModals = [...prev];
+      newModals[index] = false;
+      return newModals;
+    });
+  };
+
   return (
     <div className="flex flex-col items-center w-full p-2 min-h-[74vh]">
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
-        <div className="flex lg:flex-row flex-col gap-2 h-1/2">
+        <div className="flex lg:flex-row flex-col gap-2 h-1/2 border rounded">
           {questionImage && (
-            <div className="relative flex items-center justify-center lg:w-auto w-full h-full ">
-              <div className="absolute right-0 top-0 flex flex-col gap-2 text-white p-2">
-                <button
-                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
-                  onClick={onQuestionImageSaveHandler}
-                >
-                  <MdSave className="text-xl" />
-                </button>
-
-                <button
-                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
-                  onClick={() => setShowQuestionImageUploadModal(true)}
-                >
-                  <MdImage className="text-xl" />
-                </button>
-                <button
-                  className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-red-600 border-none hover:bg-red-700"
-                  onClick={onDeleteQuestionImageHandler}
-                >
-                  <AiOutlineDelete className="text-xl" />
-                </button>
-              </div>
-              <Image
-                src={questionImage}
-                alt="quiz cover"
-                width={300}
-                height={300}
-                className="rounded-md lg:w-[400px] w-full h-full  object-cover bg-red-900 border-2 border-red-900"
-              />
-            </div>
+            <ImageComponent
+              image={questionImage}
+              setShowQuestionImageUploadModal={setShowQuestionImageUploadModal}
+              onSaveImage={onSaveQuestionImageHandler}
+              onDeleteImage={onDeleteQuestionImageHandler}
+            />
           )}
           <div className="w-full h-full">
             <TextEditor
-              toolbarStyles="bg-red-900 border h-auto"
-              editorStyles="focus:bg-red-800 bg-red-900 "
+              toolbarStyles="bg-red-900 h-auto"
+              editorStyles="bg-red-800 "
               placeholder="Type question here"
-              value={activeQuestionData.question.text || ""}
+              value={activeQuestionData?.question.text || ""}
               isAutoFocus={true}
               onChange={(e) => onQuestionValueChange(e.target.value)}
               onImageClickHandler={() => setShowQuestionImageUploadModal(true)}
-              isImageButton={questionImage ? false : true}
+              isImageButton={!questionImage}
               imageDeleteHandler={onDeleteQuestionImageHandler}
             />
           </div>
         </div>
-        {/* Options */}
         <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full">
           {editors.map((editor, index) => (
             <div
               key={editor.id}
-              className={`relative w-full h-full fex flex-row rounded p-2 ${
-                index === 0
-                  ? "bg-green-900"
-                  : index === 1
-                  ? "bg-blue-900"
-                  : index === 2
-                  ? "bg-fuchsia-900"
-                  : index === 3
-                  ? "bg-purple-900"
-                  : "bg-yellow-900"
-              }`}
+              className={`relative w-full h-full fex flex-row rounded p-2 ${editorColors[index]}`}
             >
               <TextEditor
                 key={editor.id}
                 deleteButtonHandler={() => deleteEditorHandler(editor.id)}
                 isDeleteButton={editors.length > 2}
-                toolbarStyles={
-                  index === 0
-                    ? "bg-green-900"
-                    : index === 1
-                    ? "bg-blue-900"
-                    : index === 2
-                    ? "bg-fuchsia-900"
-                    : index === 3
-                    ? "bg-purple-900"
-                    : "bg-yellow-900"
-                }
-                editorStyles={
-                  index === 0
-                    ? "focus:bg-green-800 bg-green-900"
-                    : index === 1
-                    ? "focus:bg-blue-800 bg-blue-900"
-                    : index === 2
-                    ? "focus:bg-fuchsia-800 bg-fuchsia-900"
-                    : index === 3
-                    ? "focus:bg-purple-800 bg-purple-900"
-                    : "focus:bg-yellow-800 bg-yellow-900"
-                }
+                toolbarStyles={editorColors[index]}
+                editorStyles={editorBackColors[index]}
                 type={
-                  activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
+                  activeQuestionData?.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
                 }
                 onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
                 placeholder={`Type option ${index + 1} here`}
                 onChange={(e) => onOptionValueChange(e.target.value, index)}
-                value={activeQuestionData.options[index]?.text || ""}
-                isRadioChecked={activeQuestionData.answer.some(
+                value={activeQuestionData?.options[index]?.text || ""}
+                isRadioChecked={activeQuestionData?.answer.some(
                   (answer) =>
                     answer.text === activeQuestionData.options[index]?.text
                 )}
-                isCheckboxChecked={activeQuestionData.answer.some(
+                isCheckboxChecked={activeQuestionData?.answer.some(
                   (answer) =>
                     answer.text === activeQuestionData.options[index]?.text
                 )}
                 onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
-                isDisabled={!activeQuestionData.options[index]}
-                isImageButton={optionImages[index] ? false : true}
-                onImageClickHandler={() => {
+                isDisabled={!activeQuestionData?.options[index]}
+                isImageButton={!optionImages[index]}
+                onImageClickHandler={() =>
                   setShowOptionImageUploadModal((prev) => {
                     const newModals = [...prev];
                     newModals[index] = true;
                     return newModals;
-                  });
-                }}
+                  })
+                }
+                imageDeleteHandler={() => onDeleteOptionImageHandler(index)}
               />
               {optionImages[index] && (
-                <div className="relative flex items-center justify-center w-full h-fit ">
-                  <div className="absolute right-0 top-0 flex flex-col gap-2 text-white p-2">
-                    <button
-                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
-                      onClick={() => onOptionImageSaveHandler(index)}
-                    >
-                      <MdSave className="text-xl" />
-                    </button>
-                    <button
-                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
-                      onClick={() => {
-                        setShowOptionImageUploadModal((prev) => {
-                          const newModals = [...prev];
-                          newModals[index] = true;
-                          return newModals;
-                        });
-                      }}
-                    >
-                      <MdImage className="text-xl" />
-                    </button>
-                    <button
-                      className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
-                      onClick={() => onDeleteOptionImageHandler(index)}
-                    >
-                      <AiOutlineDelete className="text-xl" />
-                    </button>
-                  </div>
-                  <Image
-                    src={optionImages[index]}
-                    alt="quiz cover"
-                    width={300}
-                    height={300}
-                    className="rounded-md lg:w-[400px] w-full h-full  object-cover "
-                  />
-                </div>
+                <ImageComponent
+                  image={optionImages[index]}
+                  setShowQuestionImageUploadModal={() =>
+                    setShowOptionImageUploadModal((prev) => {
+                      const newModals = [...prev];
+                      newModals[index] = true;
+                      return newModals;
+                    })
+                  }
+                  onSaveImage={() => onSaveOptionImageHandler(index)}
+                  onDeleteImage={() => onDeleteOptionImageHandler(index)}
+                />
               )}
               {showOptionImageUploadModal[index] && (
                 <ImageUploadModal
-                  onClose={() => {
-                    setShowOptionImageUploadModal((prev) => {
-                      const newModals = [...prev];
-                      newModals[index] = false;
-                      return newModals;
-                    });
-                  }}
-                  SetImage={(image: string) => {
-                    setImageBasedOnOption(index, image);
-                  }}
+                  onClose={() => onImageUploadModalClose(index)}
+                  SetImage={(image) => setImageBasedOnOption(index, image)}
                   deleteOnClick={() => onDeleteOptionImageHandler(index)}
-                  doneOnClick={() => {
-                    setShowOptionImageUploadModal((prev) => {
-                      const newModals = [...prev];
-                      newModals[index] = false;
-                      return newModals;
-                    });
-                  }}
+                  doneOnClick={() => onImageUploadModalClose(index)}
                 />
               )}
             </div>
