@@ -6,20 +6,20 @@ import { MdDelete } from 'react-icons/md';
 import { Tooltip } from 'react-tooltip';
 
 interface TextEditorProps {
-// Strings
+  // Strings
   editorStyles?: string;
   toolbarStyles?: string;
   placeholder?: string;
   value?: string;
   type?: "SINGLE" | "MULTIPLE";
-// Boolean
+  // Boolean
   isDeleteButton?: boolean;
   isImageButton?: boolean;
   isAutoFocus?: boolean;
   isCheckboxChecked?: boolean;
   isRadioChecked?: boolean;
   isDisabled?: boolean;
-// Functions
+  // Functions
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCheckCheckbox?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,9 +49,9 @@ const TextEditor = ({
 }: TextEditorProps) => {
   return (
     <div
-      className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
+      className={`flex flex-col gap-2 p-2 rounded text-white  ${toolbarStyles}`}
     >
-      <div className="flex flex-wrap items-center relative">
+      <div className="flex flex-wrap items-center relative shadow-lg rounded">
         {isImageButton ? (
           <>
             <button className="p-2">
@@ -118,7 +118,7 @@ const TextEditor = ({
         )}
       </div>
       <textarea
-        className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
+        className={`rounded min-h-[20vh] p-2  ${editorStyles}  border-none shadow focus:outline-none`}
         placeholder={placeholder}
         onChange={onChange}
         value={value}

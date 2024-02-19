@@ -4,6 +4,7 @@ import { IoIosAdd } from 'react-icons/io';
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 import ImageUploadModal from './modals/ImageUploadModal';
+import Accordion from './reusable/Accordion';
 import ImageComponent from './reusable/ImageComponent';
 import TextEditor from './reusable/TextEditor';
 
@@ -35,10 +36,10 @@ function CreateQuestion() {
   const [showQuestionImageUploadModal, setShowQuestionImageUploadModal] =
     useState(false);
   const [showOptionImageUploadModal, setShowOptionImageUploadModal] = useState(
-    new Array<boolean>(5).fill(false)
+    new Array<boolean>(5).fill(false),
   );
   const [optionImages, setOptionImages] = useState<string[]>(
-    new Array(5).fill("")
+    new Array(5).fill(""),
   );
   const [questionImage, setQuestionImage] = useState("");
   const [editors, setEditors] = useState<Editor[]>([{ id: 1 }, { id: 2 }]);
@@ -81,7 +82,7 @@ function CreateQuestion() {
 
     if (activeQuestionData.options) {
       const newOptionImages = activeQuestionData.options.map(
-        (option) => option.image
+        (option) => option.image,
       );
       setOptionImages(newOptionImages);
     }
@@ -108,7 +109,7 @@ function CreateQuestion() {
   const deleteEditorHandler = (index: number) => {
     if (editors.length > 2) {
       setEditors((prevEditors) =>
-        prevEditors.filter((editor) => editor.id !== index)
+        prevEditors.filter((editor) => editor.id !== index),
       );
       const updatedQuestions = [...quizData.questions];
       updatedQuestions[activeQuestion].options = updatedQuestions[
@@ -132,7 +133,7 @@ function CreateQuestion() {
 
   const onCheckRadioClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (e.target.checked) {
       const optionValue = activeQuestionData.options[index];
@@ -145,7 +146,7 @@ function CreateQuestion() {
 
   const onCheckCheckboxClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     const optionValue = activeQuestionData.options[index];
     if (e.target.checked) {
@@ -204,101 +205,120 @@ function CreateQuestion() {
   return (
     <div className="flex flex-col items-center w-full p-2 min-h-[74vh]">
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
-        <div className="flex lg:flex-row flex-col gap-2 h-1/2 border rounded">
-          {questionImage && (
-            <ImageComponent
-              image={questionImage}
-              setShowQuestionImageUploadModal={setShowQuestionImageUploadModal}
-              onSaveImage={onSaveQuestionImageHandler}
-              onDeleteImage={onDeleteQuestionImageHandler}
-            />
-          )}
-          <div className="w-full h-full">
-            <TextEditor
-              toolbarStyles="bg-red-900 h-auto"
-              editorStyles="bg-red-800 "
-              placeholder="Type question here"
-              value={activeQuestionData?.question.text || ""}
-              isAutoFocus={true}
-              onChange={(e) => onQuestionValueChange(e.target.value)}
-              onImageClickHandler={() => setShowQuestionImageUploadModal(true)}
-              isImageButton={!questionImage}
-              imageDeleteHandler={onDeleteQuestionImageHandler}
-            />
-          </div>
-        </div>
-        <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full">
-          {editors.map((editor, index) => (
-            <div
-              key={editor.id}
-              className={`relative w-full h-full fex flex-row rounded p-2 ${editorColors[index]}`}
-            >
-              <TextEditor
-                key={editor.id}
-                deleteButtonHandler={() => deleteEditorHandler(editor.id)}
-                isDeleteButton={editors.length > 2}
-                toolbarStyles={editorColors[index]}
-                editorStyles={editorBackColors[index]}
-                type={
-                  activeQuestionData?.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
+        <Accordion
+          title={activeQuestionData?.question.text || "Untitled Question"}
+          styleString="bg-red-900"
+        >
+          <div className="flex lg:flex-row flex-col gap-2 h-1/2  rounded">
+            {questionImage && (
+              <ImageComponent
+                image={questionImage}
+                setShowQuestionImageUploadModal={
+                  setShowQuestionImageUploadModal
                 }
-                onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
-                placeholder={`Type option ${index + 1} here`}
-                onChange={(e) => onOptionValueChange(e.target.value, index)}
-                value={activeQuestionData?.options[index]?.text || ""}
-                isRadioChecked={activeQuestionData?.answer.some(
-                  (answer) =>
-                    answer.text === activeQuestionData.options[index]?.text
-                )}
-                isCheckboxChecked={activeQuestionData?.answer.some(
-                  (answer) =>
-                    answer.text === activeQuestionData.options[index]?.text
-                )}
-                onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
-                isDisabled={!activeQuestionData?.options[index]}
-                isImageButton={!optionImages[index]}
-                onImageClickHandler={() =>
-                  setShowOptionImageUploadModal((prev) => {
-                    const newModals = [...prev];
-                    newModals[index] = true;
-                    return newModals;
-                  })
-                }
-                imageDeleteHandler={() => onDeleteOptionImageHandler(index)}
+                onSaveImage={onSaveQuestionImageHandler}
+                onDeleteImage={onDeleteQuestionImageHandler}
               />
+            )}
+            <div className="w-full h-full">
+              <TextEditor
+                toolbarStyles="bg-red-900 h-auto"
+                editorStyles="bg-red-800"
+                placeholder="Type question here"
+                value={activeQuestionData?.question.text || ""}
+                isAutoFocus={true}
+                onChange={(e) => onQuestionValueChange(e.target.value)}
+                onImageClickHandler={() =>
+                  setShowQuestionImageUploadModal(true)
+                }
+                isImageButton={!questionImage}
+                imageDeleteHandler={onDeleteQuestionImageHandler}
+              />
+            </div>
+          </div>
+        </Accordion>
+
+        {editors.map((editor, index) => (
+          <Accordion
+            key={editor.id}
+            styleString={editorColors[index]}
+            title={`Option ${index + 1}`}
+          >
+            <div
+              className={`flex lg:flex-row flex-col gap-2 h-1/2 w-[100%]  ${editorColors[index]}`}
+            >
               {optionImages[index] && (
-                <ImageComponent
-                  image={optionImages[index]}
-                  setShowQuestionImageUploadModal={() =>
+                <div className="shadow-lg ">
+                  <ImageComponent
+                    image={optionImages[index]}
+                    setShowQuestionImageUploadModal={() =>
+                      setShowOptionImageUploadModal((prev) => {
+                        const newModals = [...prev];
+                        newModals[index] = true;
+                        return newModals;
+                      })
+                    }
+                    onSaveImage={() => onSaveOptionImageHandler(index)}
+                    onDeleteImage={() => onDeleteOptionImageHandler(index)}
+                  />
+                </div>
+              )}
+              <div className="w-full h-full">
+                <TextEditor
+                  key={editor.id}
+                  deleteButtonHandler={() => deleteEditorHandler(editor.id)}
+                  isDeleteButton={editors.length > 2}
+                  toolbarStyles={editorColors[index]}
+                  editorStyles={editorBackColors[index]}
+                  type={
+                    activeQuestionData?.type === "SINGLE"
+                      ? "SINGLE"
+                      : "MULTIPLE"
+                  }
+                  onCheckRadio={(e) => onCheckRadioClickHandler(e, index)}
+                  placeholder={`Type option ${index + 1} here`}
+                  onChange={(e) => onOptionValueChange(e.target.value, index)}
+                  value={activeQuestionData?.options[index]?.text || ""}
+                  isRadioChecked={activeQuestionData?.answer.some(
+                    (answer) =>
+                      answer.text === activeQuestionData.options[index]?.text,
+                  )}
+                  isCheckboxChecked={activeQuestionData?.answer.some(
+                    (answer) =>
+                      answer.text === activeQuestionData.options[index]?.text,
+                  )}
+                  onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
+                  isDisabled={!activeQuestionData?.options[index]}
+                  isImageButton={!optionImages[index]}
+                  onImageClickHandler={() =>
                     setShowOptionImageUploadModal((prev) => {
                       const newModals = [...prev];
                       newModals[index] = true;
                       return newModals;
                     })
                   }
-                  onSaveImage={() => onSaveOptionImageHandler(index)}
-                  onDeleteImage={() => onDeleteOptionImageHandler(index)}
+                  imageDeleteHandler={() => onDeleteOptionImageHandler(index)}
                 />
-              )}
-              {showOptionImageUploadModal[index] && (
-                <ImageUploadModal
-                  onClose={() => onImageUploadModalClose(index)}
-                  SetImage={(image) => setImageBasedOnOption(index, image)}
-                  deleteOnClick={() => onDeleteOptionImageHandler(index)}
-                  doneOnClick={() => onImageUploadModalClose(index)}
-                />
-              )}
+              </div>
             </div>
-          ))}
-          {editors.length < 5 && (
-            <div
-              className="flex items-center justify-center rounded-md p-2 cursor-pointer h-full border"
-              onClick={handleAddEditor}
-            >
-              <IoIosAdd className="text-4xl" />
-            </div>
-          )}
-        </div>
+            {showOptionImageUploadModal[index] && (
+              <ImageUploadModal
+                onClose={() => onImageUploadModalClose(index)}
+                SetImage={(image) => setImageBasedOnOption(index, image)}
+                deleteOnClick={() => onDeleteOptionImageHandler(index)}
+                doneOnClick={() => onImageUploadModalClose(index)}
+              />
+            )}
+          </Accordion>
+        ))}
+        {editors.length < 5 && (
+          <div
+            className="flex items-center justify-center rounded-md p-2 cursor-pointer h-full border"
+            onClick={handleAddEditor}
+          >
+            <IoIosAdd className="text-4xl" />
+          </div>
+        )}
       </div>
       {showQuestionImageUploadModal && (
         <ImageUploadModal

@@ -2,6 +2,8 @@ import Image from 'next/image';
 
 import { useQuizData } from '@/provider/QuizDataProvider';
 
+import Accordion from './reusable/Accordion';
+
 const QuizPreview = () => {
   const { quizData: quiz } = useQuizData();
 
@@ -29,25 +31,25 @@ const QuizPreview = () => {
 
             <table className="table-auto w-full border-collapse">
               <tbody className="text-left">
-                <tr className="border-b-2 border-gray-300">
+                <tr className="border-b border-gray-300">
                   <td className="pr-4 py-2">
                     <strong className="text-gray-800">Subject:</strong>
                   </td>
                   <td className="py-2">{quiz.subject}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
+                <tr className="border-b border-gray-300">
                   <td className="pr-4 py-2">
                     <strong className="text-gray-800">Grade:</strong>
                   </td>
                   <td className="py-2">{quiz.grade}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
+                <tr className="border-b border-gray-300">
                   <td className="pr-4 py-2">
                     <strong className="text-gray-800">Language:</strong>
                   </td>
                   <td className="py-2">{quiz.language}</td>
                 </tr>
-                <tr>
+                <tr className="border-b border-gray-300">
                   <td className="pr-4 py-2">
                     <strong className="text-gray-800">Visibility:</strong>
                   </td>
@@ -67,8 +69,8 @@ const QuizPreview = () => {
             <h2 className="text-xl font-bold mb-2 underline">Questions</h2>
             {quiz.questions.map((question, index) => (
               <div key={index} className="mb-4  p-2 rounded-lg shadow-lg">
-                <div className="flex md:flex-row flex-col-reverse justify-between md:items-center border-b-2 border-gray-500">
-                  <div className="w-auto">
+                <div className="flex md:flex-row flex-col-reverse justify-between md:items-center border-b-2 border-gray-500 py-4">
+                  <div className="md:w-auto w-full">
                     <h3 className="text-lg font-semibold mb-1">
                       Q.{index + 1}: {question.question.text}
                     </h3>
@@ -76,57 +78,65 @@ const QuizPreview = () => {
                       <div className="flex justify-center">
                         <Image
                           src={question.question.image}
-                          alt="question image"
+                          alt="Question Image"
                           width={200}
                           height={200}
+                          className="rounded-md"
                         />
                       </div>
                     )}
                   </div>
-                  <span className="text-sm font-semibold wfull text-end">
-                    {question.points} Points | {question.time} sec |{" "}
-                    {question.difficulty}
-                  </span>
+                  <div className="flex items-center text-sm font-semibold space-x-4">
+                    <span>{question.type}</span>
+                    <span>|</span>
+                    <span>{question.points} Points</span>
+                    <span>|</span>
+                    <span>{question.time} sec</span>
+                    <span>|</span>
+                    <span>{question.difficulty}</span>
+                  </div>
                 </div>
-                <ol className="list-inside list-decimal">
+
+                <ol className="list-inside list-decimal mt-2">
                   {question.options.map((option, optionIndex) => (
-      
                     <li
                       key={optionIndex}
-                      className={`${
-                        question.answer.some(
-                          (ans) => ans.text === option.text,
-                        ) && "text-green-500 font-semibold"
+                      className={`flex items-center justify-between py-2 px-4 mb-2 rounded-md border border-gray-300 hover:border-gray-400 ${
+                        question.answer.some((ans) => ans.text === option.text)
+                          ? "bg-green-100 border-green-500 text-green-700 font-semibold"
+                          : "bg-white"
                       }`}
                     >
-                      {option.text}
+                      <span className="flex-1">{option.text}</span>
                       {option.image && (
-                        <div className="flex justify-center">
+                        <div className="ml-4">
                           <Image
                             src={option.image}
-                            alt="option image"
+                            alt="Option Image"
                             width={100}
                             height={100}
+                            className="rounded-md"
                           />
                         </div>
                       )}
                     </li>
                   ))}
                 </ol>
-                <p className="text-sm mt-2">
-                  <strong>Explanation: </strong>
-                  {question.explanation.text}
-                </p>
-                {question.explanation.image && (
+                <Accordion title="Explanation">
                   <div className="mt-2">
-                    <Image
-                      src={question.explanation.image}
-                      alt="explanation image"
-                      width={200}
-                      height={200}
-                    />
+                    <p>{question.explanation.text}</p>
+                    {question.explanation.image && (
+                      <div className="mt-2">
+                        <Image
+                          src={question.explanation.image}
+                          alt="explanation image"
+                          width={200}
+                          height={200}
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
+                </Accordion>
               </div>
             ))}
           </div>
