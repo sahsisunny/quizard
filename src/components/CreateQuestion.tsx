@@ -13,8 +13,9 @@ function CreateQuestion() {
   const { activeQuestion } = useActiveQuestion();
   const { quizData, setQuizData } = useQuizData();
   const activeQuestionData = quizData.questions[activeQuestion];
-  const [showImageUploadModal, setImageUploadModal] = useState(false);
-  const [imgSrc, setImgSrc] = useState("");
+  const [showQuestionImageUploadModal, setShowQuestionImageUploadModal] =
+    useState(false);
+  const [questionImage, setQuestionImage] = useState("");
   const [editors, setEditors] = useState([{ id: 1 }, { id: 2 }]);
 
   useEffect(() => {
@@ -24,9 +25,9 @@ function CreateQuestion() {
       }));
       setEditors(newEditors.length > 0 ? newEditors : [{ id: 1 }, { id: 2 }]);
       if (activeQuestionData.question.image) {
-        setImgSrc(activeQuestionData.question.image);
+        setQuestionImage(activeQuestionData.question.image);
       } else {
-        setImgSrc("");
+        setQuestionImage("");
       }
     }
   }, [activeQuestionData, quizData]);
@@ -35,14 +36,22 @@ function CreateQuestion() {
   const handleAddEditor = () => {
     if (editors.length < 5) {
       setEditors((prevEditors) => [...prevEditors, { id: Date.now() }]);
+      const updatedQuestions = [...quizData.questions];
+      updatedQuestions[activeQuestion].options.push({ text: "", image: "" });
+      setQuizData({ ...quizData, questions: updatedQuestions });
     }
   };
 
-  const deleteEditorHandler = (id: number) => {
+  const deleteEditorHandler = (index: number) => {
     if (editors.length > 2) {
       setEditors((prevEditors) =>
-        prevEditors.filter((editor) => editor.id !== id),
+        prevEditors.filter((editor) => editor.id !== index),
       );
+      const updatedQuestions = [...quizData.questions];
+      updatedQuestions[activeQuestion].options = updatedQuestions[
+        activeQuestion
+      ].options.filter((_, i) => i !== index);
+      setQuizData({ ...quizData, questions: updatedQuestions });
     }
   };
 
@@ -54,11 +63,7 @@ function CreateQuestion() {
 
   const onOptionValueChange = (optionValue: string, index: number) => {
     const updatedQuestions = [...quizData.questions];
-    if (activeQuestionData.options[index]) {
-      activeQuestionData.options[index].text = optionValue;
-    } else {
-      activeQuestionData.options[index] = { text: optionValue, image: "" };
-    }
+    updatedQuestions[activeQuestion].options[index].text = optionValue;
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
@@ -96,14 +101,14 @@ function CreateQuestion() {
   const onQuestionImageSaveHandler = () => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
-    updatedQuestions[activeQuestion].question.image = imgSrc;
+    updatedQuestions[activeQuestion].question.image = questionImage;
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
   const onDeleteQuestionImageHandler = () => {
     const updatedQuestions = [...quizData.questions];
     updatedQuestions[activeQuestion].question.image = "";
-    setImgSrc("");
+    setQuestionImage("");
     setQuizData({ ...quizData, questions: updatedQuestions });
   };
 
@@ -111,9 +116,9 @@ function CreateQuestion() {
     <div className="flex flex-col items-center w-full p-2 min-h-[74vh]">
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
         <div className="flex lg:flex-row flex-col gap-2 h-1/2">
-          {imgSrc && (
-            <div className="relative flex items-center justify-center lg:w-auto w-full h-full">
-              <div className="absolute right-0 top-0 flex flex-col gap-2 text-white">
+          {questionImage && (
+            <div className="relative flex items-center justify-center lg:w-auto w-full h-full ">
+              <div className="absolute right-0 top-0 flex flex-col gap-2 text-white p-2">
                 <button
                   className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-blue-600 border-none hover:bg-blue-700"
                   onClick={onQuestionImageSaveHandler}
@@ -123,7 +128,7 @@ function CreateQuestion() {
 
                 <button
                   className="flex gap-2 items-center justify-center  px-2 py-2 border rounded bg-green-600 border-none hover:bg-green-700"
-                  onClick={() => setImageUploadModal(true)}
+                  onClick={() => setShowQuestionImageUploadModal(true)}
                 >
                   <MdImage className="text-xl" />
                 </button>
@@ -135,7 +140,7 @@ function CreateQuestion() {
                 </button>
               </div>
               <Image
-                src={imgSrc}
+                src={questionImage}
                 alt="quiz cover"
                 width={300}
                 height={300}
@@ -151,7 +156,9 @@ function CreateQuestion() {
               value={activeQuestionData.question.text || ""}
               isAutoFocus={true}
               onChange={(e) => onQuestionValueChange(e.target.value)}
-              onImageClickHandler={() => setImageUploadModal(true)}
+              onImageClickHandler={() => setShowQuestionImageUploadModal(true)}
+              isImageButton={questionImage ? false : true}
+              imageDeleteHandler={onDeleteQuestionImageHandler}
             />
           </div>
         </div>
@@ -201,7 +208,7 @@ function CreateQuestion() {
               )}
               onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
               isDisabled={!activeQuestionData.options[index]}
-              onImageClickHandler={() => setImageUploadModal(true)}
+              isImageButton={true}
             />
           ))}
           {editors.length < 5 && (
@@ -214,12 +221,12 @@ function CreateQuestion() {
           )}
         </div>
       </div>
-      {showImageUploadModal && (
+      {showQuestionImageUploadModal && (
         <ImageUploadModal
-          onClose={() => setImageUploadModal(false)}
-          SetImage={setImgSrc}
-          deleteOnClick={() => setImgSrc("")}
-          doneOnClick={() => setImageUploadModal(false)}
+          onClose={() => setShowQuestionImageUploadModal(false)}
+          SetImage={setQuestionImage}
+          deleteOnClick={() => setQuestionImage("")}
+          doneOnClick={() => setShowQuestionImageUploadModal(false)}
         />
       )}
     </div>

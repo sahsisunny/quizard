@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { BiBold, BiText } from 'react-icons/bi';
+import { FaItalic } from 'react-icons/fa';
+import { FcRemoveImage } from 'react-icons/fc';
 import { IoImage } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
 import { Tooltip } from 'react-tooltip';
-
-import ImageUploadModal from '../modals/ImageUploadModal';
 
 interface TextEditorProps {
   // Strings
@@ -14,6 +14,7 @@ interface TextEditorProps {
   type?: "SINGLE" | "MULTIPLE";
   // Boolean
   isDeleteButton?: boolean;
+  isImageButton?: boolean;
   isAutoFocus?: boolean;
   isCheckboxChecked?: boolean;
   isRadioChecked?: boolean;
@@ -24,6 +25,7 @@ interface TextEditorProps {
   onCheckRadio?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   deleteButtonHandler?: () => void;
   onImageClickHandler?: () => void;
+  imageDeleteHandler?: () => void;
 }
 
 const TextEditor = ({
@@ -38,26 +40,43 @@ const TextEditor = ({
   isAutoFocus,
   isCheckboxChecked,
   isRadioChecked,
+  isImageButton = false,
   onCheckCheckbox,
   onCheckRadio,
   isDisabled,
   onImageClickHandler,
+  imageDeleteHandler,
 }: TextEditorProps) => {
   return (
     <div
       className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
     >
       <div className="flex flex-wrap items-center relative">
-        <button className="p-2">
-          <strong>B</strong>
-        </button>
-        <button className="p-2">
-          <i>I</i>
-        </button>
-        <button className="p-2 underline">U</button>
-        <button className="p-2" onClick={onImageClickHandler}>
-          <IoImage />
-        </button>
+        {isImageButton ? (
+          <>
+            <button className="p-2">
+              <BiBold />
+            </button>
+            <button className="p-2">
+              <FaItalic />
+            </button>
+            <button className="p-2 underline">U</button>
+          </>
+        ) : (
+          <>
+            <button className="p-2">
+              <BiText />
+            </button>
+            <button className="p-2" onClick={imageDeleteHandler}>
+              <FcRemoveImage className="text-white" />
+            </button>
+          </>
+        )}
+        {isImageButton && (
+          <button className="p-2" onClick={onImageClickHandler}>
+            <IoImage />
+          </button>
+        )}
         {isDeleteButton && (
           <button className="p-2" onClick={deleteButtonHandler}>
             <MdDelete />

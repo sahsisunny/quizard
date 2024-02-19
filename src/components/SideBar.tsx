@@ -15,8 +15,12 @@ function SideBar() {
         {
           question: {
             text: "",
+            image: "",
           },
-          options: [],
+          options: [
+            { text: "", image: "" },
+            { text: "", image: "" },
+          ],
           answer: [],
           type: "Type",
           points: "Points",
