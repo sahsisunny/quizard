@@ -64,8 +64,8 @@ function ImageUploadModal({
             />
             <div className="absolute top-0 right-0">
               <ImageEditTool
-                toolContainerStyle="flex-row justify-between "
-                buttonStyle="w-fit flex gap-2 items-center justify-center px-2 py-2 border rounded border-none  text-white"
+                toolContainerStyle="flex-col justify-between "
+                buttonStyle="w-full flex gap-2 items-center justify-center px-2 py-2 border rounded border-none  text-white"
                 deleteOnClick={deleteOnClick}
                 setShowImageCropModal={setShowImageCropModal}
                 setImgSrc={setImgSrc}
@@ -79,7 +79,7 @@ function ImageUploadModal({
           </div>
         ) : (
           <>
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center gap-2 w-full">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -90,8 +90,10 @@ function ImageUploadModal({
               <FcAddImage size={50} />
               <span>Click to upload</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <span>JPEG, JPG PNG</span>
+            <div>
+              <span className="text-sm text-gray-500 pr-1">JPEG</span>
+              <span className="text-sm text-gray-500 p-1">PNG</span>
+              <span className="text-sm text-gray-500 ">SVG</span>
             </div>
           </>
         )}

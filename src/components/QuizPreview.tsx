@@ -94,7 +94,7 @@ const QuizPreview = () => {
                       key={optionIndex}
                       className={`${
                         question.answer.some(
-                          (ans) => ans.text === option.text
+                          (ans) => ans.text === option.text,
                         ) && "text-green-500 font-semibold"
                       }`}
                     >

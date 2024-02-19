@@ -80,16 +80,17 @@ function SideBar() {
                  ${activeQuestion === index ? "text-green-500" : ""}`}
               >
                 {quizData.questions[index].question.text ||
-                  "Question " + (index + 1)}
+                  `Untitled Question ${index + 1}`}
               </span>
             </div>
           </div>
         ))}
         <div
-          className="min-h-[6rem]  min-w-[10rem] border-2 border-gray-500 rounded flex justify-center items-center cursor-pointer hover:shadow-md"
+          className="min-h-[6rem]  min-w-[10rem] border-2 border-gray-500 rounded flex flex-col justify-center items-center cursor-pointer hover:shadow-md"
           onClick={addNewQuestion}
         >
           <IoIosAddCircleOutline className="text-4xl" />
+          <strong>Add Question</strong>
         </div>
       </div>
       <div className="gap-2 flex flex-col justify-around">

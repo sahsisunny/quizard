@@ -41,7 +41,7 @@ function CreateQuestion() {
   const deleteEditorHandler = (id: number) => {
     if (editors.length > 2) {
       setEditors((prevEditors) =>
-        prevEditors.filter((editor) => editor.id !== id)
+        prevEditors.filter((editor) => editor.id !== id),
       );
     }
   };
@@ -64,7 +64,7 @@ function CreateQuestion() {
 
   const onCheckRadioClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (e.target.checked) {
       const optionValue = activeQuestionData.options[index];
@@ -77,7 +77,7 @@ function CreateQuestion() {
 
   const onCheckCheckboxClickHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     const optionValue = activeQuestionData.options[index];
     if (e.target.checked) {
@@ -166,23 +166,23 @@ function CreateQuestion() {
                 index === 0
                   ? "bg-green-900"
                   : index === 1
-                  ? "bg-blue-900"
-                  : index === 2
-                  ? "bg-fuchsia-900"
-                  : index === 3
-                  ? "bg-purple-900"
-                  : "bg-yellow-900"
+                    ? "bg-blue-900"
+                    : index === 2
+                      ? "bg-fuchsia-900"
+                      : index === 3
+                        ? "bg-purple-900"
+                        : "bg-yellow-900"
               }
               editorStyles={
                 index === 0
                   ? "focus:bg-green-800 bg-green-900"
                   : index === 1
-                  ? "focus:bg-blue-800 bg-blue-900"
-                  : index === 2
-                  ? "focus:bg-fuchsia-800 bg-fuchsia-900"
-                  : index === 3
-                  ? "focus:bg-purple-800 bg-purple-900"
-                  : "focus:bg-yellow-800 bg-yellow-900"
+                    ? "focus:bg-blue-800 bg-blue-900"
+                    : index === 2
+                      ? "focus:bg-fuchsia-800 bg-fuchsia-900"
+                      : index === 3
+                        ? "focus:bg-purple-800 bg-purple-900"
+                        : "focus:bg-yellow-800 bg-yellow-900"
               }
               type={
                 activeQuestionData.type === "SINGLE" ? "SINGLE" : "MULTIPLE"
@@ -193,11 +193,11 @@ function CreateQuestion() {
               value={activeQuestionData.options[index]?.text || ""}
               isRadioChecked={activeQuestionData.answer.some(
                 (answer) =>
-                  answer.text === activeQuestionData.options[index]?.text
+                  answer.text === activeQuestionData.options[index]?.text,
               )}
               isCheckboxChecked={activeQuestionData.answer.some(
                 (answer) =>
-                  answer.text === activeQuestionData.options[index]?.text
+                  answer.text === activeQuestionData.options[index]?.text,
               )}
               onCheckCheckbox={(e) => onCheckCheckboxClickHandler(e, index)}
               isDisabled={!activeQuestionData.options[index]}

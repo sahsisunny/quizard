@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
     <div className="text-black fixed top-0 left-0 w-full h-full  flex justify-center items-center bg-gray-500 bg-opacity-80 z-40">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg p-4 md:w-[50%] w-[90%] "
+        className="bg-white rounded-lg p-4 md:max-w-[50%] w-[90%] "
       >
         <div className="flex justify-between items-center gap-2">
           <div className="flex items-center gap-2">

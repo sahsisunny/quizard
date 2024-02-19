@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Quizard App
 
-## Getting Started
+Quizard is a basic UI application designed for creating and managing multiple-choice questions (MCQs). Users can add single or multiple correct MCQs, with features such as dummy data generation, clearing data, quiz preview with correct answers highlighted, image upload for each question, adding explanations, tagging quizzes, and setting various parameters like grade, subject, language, title, cover image, question type (single or multiple), points, time, and difficulty.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Dummy Data Generation**: Quickly populate the app with dummy questions for testing purposes.
+- **Clear Data Button**: Easily clear all added data with a single click.
+- **Quiz Preview**: View a preview of the quiz, with correct answers highlighted in green.
+- **Image Upload**: Upload images for each question to enhance visual representation.
+- **Add Explanation**: Provide additional explanations or solutions for each question.
+- **Tagging**: Add tags to categorize quizzes for easy organization and searchability.
+- **Quiz Settings**: Customize various settings such as grade, subject, language, title and cover image.
+- **Question Settings**: Set parameters for each question including type (single or multiple), points, time, and difficulty.
+- **Image Cropping**: Feature to crop uploaded images for better fitting or customization.
+- **Publishing**: View all added data in an object format in the console for easy access and management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Use
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Adding Questions**:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   - Click on the "Add Question" button.
+   - Choose the question type (single or multiple correct), points, time, and difficulty.
+   - Fill in the necessary details such as question options.
+   - Upload an image if required in the question.
+   - Add explanations or solutions by clicking on the "Add Explanation" button.
+   - Enter tags to categorize the quiz.
 
-## Learn More
+2. **Preview Quiz**:
 
-To learn more about Next.js, take a look at the following resources:
+   - Click on the "Preview" button to see how the quiz will look.
+   - Correct answers will be highlighted in green for easy identification.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Clear Data**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   - To remove all added data, click on the "Clear Data" button.
 
-## Deploy on Vercel
+4. **Generate Dummy Data**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   - Click on the "Add Test Data" button to quickly populate the app with dummy questions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. **Publish Quiz**:
+
+   - Click on the "Publish" button to view all added data in the console.
+
+6. **Customize Settings**:
+   - Adjust quiz settings such as grade, subject, language, title, cover image, etc.
+   - Configure question settings like points, time, and difficulty.
+   - Crop uploaded images for better fitting or customization.
+
+## Technologies Used
+
+- Frontend: Next.js, React, Tailwind CSS
+- Image Cropping Tool: react-cropper
+
+## Contributors
+
+- @sahsisunny
+
+## License
+
+- No License
