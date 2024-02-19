@@ -55,7 +55,7 @@ function QuestionSection() {
   };
 
   return (
-    <div className="w-full min-h-[90vh]">
+    <div className="w-full min-h-[73vh]">
       <QuizSettings
         title={quizData.title || "Untitled Quiz"}
         onClickTitle={() => setShowModal(true)}

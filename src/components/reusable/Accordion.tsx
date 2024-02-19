@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 
 interface AccordionProps {
   title: string;
@@ -22,22 +23,9 @@ const Accordion = ({ title, children, styleString }: AccordionProps) => {
         onClick={toggleAccordion}
       >
         <h3 className="text-lg font-semibold">{title}</h3>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className={`h-6 w-6 transition-transform transform ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d={isOpen ? "M19 9l-7 7-7-7" : "M5 15l7-7 7 7"}
-          />
-        </svg>
+        <div className="text-3xl">
+          {isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />}
+        </div>
       </div>
       {isOpen && <div className="px-4 py-2">{children}</div>}
     </div>

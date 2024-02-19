@@ -4,7 +4,11 @@ import { MdDelete } from 'react-icons/md';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
-function SideBar() {
+function SideBar({
+  onQuestionClick,
+}: {
+  onQuestionClick: (index: number) => void;
+}) {
   const { quizData, setQuizData } = useQuizData();
   const { activeQuestion, setActiveQuestion } = useActiveQuestion();
   const addNewQuestion = () => {
@@ -45,6 +49,7 @@ function SideBar() {
             key={index}
             onClick={() => {
               setActiveQuestion(index);
+              onQuestionClick(index);
             }}
           >
             <div className="flex flex-col items-center gap-2">
