@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosAdd } from 'react-icons/io';
 
-import { editorBackColors, editorColors } from '@/data/colors';
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
 import ImageUploadModal from './modals/ImageUploadModal';
@@ -43,6 +42,21 @@ function CreateQuestion() {
   );
   const [questionImage, setQuestionImage] = useState("");
   const [editors, setEditors] = useState<Editor[]>([{ id: 1 }, { id: 2 }]);
+
+  const editorColors = [
+    "bg-green-900",
+    "bg-blue-900",
+    "bg-fuchsia-900",
+    "bg-purple-900",
+    "bg-yellow-900",
+  ];
+  const editorBackColors = [
+    "bg-green-800",
+    "bg-blue-800",
+    "bg-fuchsia-800",
+    "bg-purple-800",
+    "bg-yellow-800",
+  ];
 
   useEffect(() => {
     if (activeQuestionData) {
