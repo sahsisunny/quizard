@@ -188,7 +188,7 @@ export const dummyTestData: QuizSettings = {
       question: {
         text: "Which of the following is not a type of computer virus?",
       },
-      type: "Multiple Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Easy",
@@ -281,7 +281,7 @@ export const dummyTestData: QuizSettings = {
       question: {
         text: "Which of the following is an example of an input device?",
       },
-      type: "Multiple Choice",
+      type: "SINGLE",
       points: "1",
       time: "60",
       difficulty: "Easy",

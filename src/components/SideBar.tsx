@@ -66,6 +66,9 @@ function SideBar({
                     (_, i) => i !== index,
                   );
                   setQuizData({ ...quizData, questions: updatedQuestions });
+                  if (activeQuestion === index) {
+                    setActiveQuestion(updatedQuestions.length - 1);
+                  }
                 }}
                 className="bg-black text-white rounded-full p-1 hover:bg-red-500 hover:shadow-md transition-all duration-300 ease-in-out flex items-center justify-center"
               >

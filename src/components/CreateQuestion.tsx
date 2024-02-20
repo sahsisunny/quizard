@@ -206,7 +206,10 @@ function CreateQuestion() {
     <div className="flex flex-col items-center w-full p-2 md:min-h-[74vh] h-fit">
       <div className="flex flex-col w-full h-full gap-2 bg-red-900 p-2 rounded">
         <Accordion
-          title={activeQuestionData?.question.text || "Untitled Question"}
+          title={
+            `Q. ${activeQuestion + 1}: ${activeQuestionData?.question.text}` ||
+            "Untitled Question"
+          }
           styleString="bg-red-900"
         >
           <div className="flex lg:flex-row flex-col gap-2 h-1/2  rounded">
@@ -242,7 +245,7 @@ function CreateQuestion() {
           <Accordion
             key={editor.id}
             styleString={editorColors[index]}
-            title={`Option ${index + 1}`}
+            title={`Option ${index + 1}: ${activeQuestionData?.options[index]?.text || "Untitled Option"}`}
           >
             <div
               className={`flex lg:flex-row flex-col gap-2 h-1/2 w-[100%]  ${editorColors[index]}`}

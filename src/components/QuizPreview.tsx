@@ -20,7 +20,7 @@ const QuizPreview = () => {
             />
             <div className="flex flex-col ml-2">
               <h2 className="font-semibold text-lg">{quiz.title}</h2>
-              <span className="text-sm">{quiz.subject}</span>
+              <span className="text-sm">{`${quiz.title} - Grade ${quiz.grade} ${quiz.subject} Mastery in ${quiz.language}`}</span>
             </div>
           </div>
         </div>
