@@ -18,7 +18,11 @@ export default function Home() {
       <main className="min-h-[100vh]">
         <TopBarComponent previewButtonHandler={previewButtonHandler} />
         <div className="h-full flex xl:flex-row flex-col-reverse">
-          <SideBar />
+          <SideBar
+            onQuestionClick={() => {
+              showPreview ? setShowPreview(false) : null;
+            }}
+          />
           {showPreview ? <QuizPreview /> : <QuestionSection />}
         </div>
       </main>

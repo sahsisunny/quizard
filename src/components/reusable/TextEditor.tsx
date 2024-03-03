@@ -29,29 +29,29 @@ interface TextEditorProps {
 }
 
 const TextEditor = ({
-  editorStyles,
-  toolbarStyles,
+  editorStyles = "",
+  toolbarStyles = "",
   placeholder = "Type here",
+  value = "",
   type,
-  isDeleteButton,
+  isDeleteButton = false,
   deleteButtonHandler,
   onChange,
-  value,
-  isAutoFocus,
-  isCheckboxChecked,
-  isRadioChecked,
+  isAutoFocus = false,
+  isCheckboxChecked = false,
+  isRadioChecked = false,
   isImageButton = false,
   onCheckCheckbox,
   onCheckRadio,
-  isDisabled,
+  isDisabled = false,
   onImageClickHandler,
   imageDeleteHandler,
 }: TextEditorProps) => {
   return (
     <div
-      className={`flex flex-col gap-2 p-2 rounded text-white ${toolbarStyles}`}
+      className={`flex flex-col gap-2 p-2 rounded text-white  ${toolbarStyles}`}
     >
-      <div className="flex flex-wrap items-center relative">
+      <div className="flex flex-wrap items-center relative shadow-lg rounded">
         {isImageButton ? (
           <>
             <button className="p-2">
@@ -82,7 +82,7 @@ const TextEditor = ({
             <MdDelete />
           </button>
         )}
-        {type === "SINGLE" ? (
+        {type === "SINGLE" && (
           <>
             <input
               type="radio"
@@ -98,7 +98,8 @@ const TextEditor = ({
             />
             <Tooltip id="radio-tooltip" />
           </>
-        ) : type === "MULTIPLE" ? (
+        )}
+        {type === "MULTIPLE" && (
           <>
             <input
               type="checkbox"
@@ -114,10 +115,10 @@ const TextEditor = ({
             />
             {isDisabled && <Tooltip id="checkbox-tooltip" />}
           </>
-        ) : null}
+        )}
       </div>
       <textarea
-        className={`rounded min-w-10 min-h-[20vh] p-2  ${editorStyles}  border-none focus:outline-none`}
+        className={`rounded min-h-[20vh] p-2  ${editorStyles}  border-none shadow focus:outline-none`}
         placeholder={placeholder}
         onChange={onChange}
         value={value}

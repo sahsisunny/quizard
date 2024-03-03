@@ -4,7 +4,11 @@ import { MdDelete } from 'react-icons/md';
 
 import { useActiveQuestion, useQuizData } from '@/provider/QuizDataProvider';
 
-function SideBar() {
+function SideBar({
+  onQuestionClick,
+}: {
+  onQuestionClick: (index: number) => void;
+}) {
   const { quizData, setQuizData } = useQuizData();
   const { activeQuestion, setActiveQuestion } = useActiveQuestion();
   const addNewQuestion = () => {
@@ -45,6 +49,7 @@ function SideBar() {
             key={index}
             onClick={() => {
               setActiveQuestion(index);
+              onQuestionClick(index);
             }}
           >
             <div className="flex flex-col items-center gap-2">
@@ -61,6 +66,9 @@ function SideBar() {
                     (_, i) => i !== index,
                   );
                   setQuizData({ ...quizData, questions: updatedQuestions });
+                  if (activeQuestion === index) {
+                    setActiveQuestion(updatedQuestions.length - 1);
+                  }
                 }}
                 className="bg-black text-white rounded-full p-1 hover:bg-red-500 hover:shadow-md transition-all duration-300 ease-in-out flex items-center justify-center"
               >
@@ -80,7 +88,7 @@ function SideBar() {
               }}
             >
               <span
-                className={`text-center text-sm overflow-hidden p-2 w-full h-full bg-black opacity-70 text-white
+                className={`text-center text-sm  p-2 w-full h-[100px] bg-black opacity-70 text-white  line-clamp-2
                  ${activeQuestion === index ? "text-green-500" : ""}`}
               >
                 {quizData.questions[index].question.text ||
