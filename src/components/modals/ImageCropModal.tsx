@@ -38,16 +38,12 @@ function ImageCropModal({
       onClose={onClose}
     >
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col justify-between items-center gap-2">
+        <div className="flex flex-col justify-between items-center gap-2 borde">
           <Cropper
             src={imgSrc}
             ref={cropperRef}
-            style={{ height: 400, width: "100%" }}
-            // You can adjust cropper options here as needed
-            // For example:
-            // aspectRatio={16 / 9}
-            // guides={true}
-            // crop={handleCrop}
+            style={{ height: 400, backgroundColor:"white", width:"100%" }}
+            viewMode={1}
           />
         </div>
         <div className="flex flex-row justify-center items-center gap-2 text-black">

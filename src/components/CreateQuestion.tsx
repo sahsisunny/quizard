@@ -210,6 +210,9 @@ function CreateQuestion() {
             `Q. ${activeQuestion + 1}: ${activeQuestionData?.question.text}` ||
             "Untitled Question"
           }
+          state={
+            activeQuestionData ? true : false
+          }
           styleString="bg-red-900"
         >
           <div className="flex lg:flex-row flex-col gap-2 h-1/2  rounded">

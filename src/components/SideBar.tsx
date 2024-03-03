@@ -88,7 +88,7 @@ function SideBar({
               }}
             >
               <span
-                className={`text-center text-sm overflow-hidden p-2 w-full h-full bg-black opacity-70 text-white
+                className={`text-center text-sm  p-2 w-full h-[100px] bg-black opacity-70 text-white  line-clamp-2
                  ${activeQuestion === index ? "text-green-500" : ""}`}
               >
                 {quizData.questions[index].question.text ||

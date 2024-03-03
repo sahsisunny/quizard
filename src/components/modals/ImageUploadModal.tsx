@@ -50,7 +50,7 @@ function ImageUploadModal({
       onClose={onClose}
     >
       <div
-        className=" h-fit flex flex-row justify-center items-center gap-2 p-2 rounded border-dashed border-2 border-black text-black cursor-pointer"
+        className=" min-h-400px flex flex-row justify-center items-center gap-2 p-2 rounded border-dashed border-2 border-black text-black cursor-pointer"
         onClick={imageSelectHandler}
       >
         {imgSrc ? (
